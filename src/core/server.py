@@ -13,7 +13,7 @@ import aiosqlite
 import websockets
 from websockets import WebSocketServerProtocol
 
-from src.config.settings import PROJECT_DIR_PATH, PYTHONPATH
+from src.config.settings import PROJECT_DIR_PATH
 from src.core.constants import (
     APPS_DIR_PATH,
     LOCK_FILES_DIR_PATH,
@@ -58,7 +58,7 @@ async def manage_subprocess(message: str):
 
         command = (
             f'start /min cmd /c "cd /d {PROJECT_DIR_PATH}'
-            f"&& set PYTHONPATH={PYTHONPATH}"
+            f"&& set PYTHONPATH={PROJECT_DIR_PATH}"
             f"&& .\\venv\\Scripts\\activate"
             f"&& cd {APPS_DIR_PATH}"
             f"&& cd {target}"

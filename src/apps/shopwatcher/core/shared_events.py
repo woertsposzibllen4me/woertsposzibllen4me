@@ -1,3 +1,5 @@
+"""Global event coordination for the shopwatcher application."""
+
 import asyncio
 
 # Event to signal that secondary windows have been spawned and are ready to be managed

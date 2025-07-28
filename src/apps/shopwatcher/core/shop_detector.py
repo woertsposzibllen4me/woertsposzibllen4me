@@ -26,7 +26,7 @@ from src.connection.websocket_client import WebSocketClient
 
 
 @final
-class ShopWatcher:
+class ShopDetector:
     """Detects the shop appearing on the screen and manages shop tracking logic."""
 
     SSIM_SIMILARITY_THRESHOLD = 0.8

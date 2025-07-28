@@ -7,7 +7,7 @@ from src.apps.shopwatcher.core.shared_events import (
     mute_ssim_prints,
     secondary_windows_spawned,
 )
-from src.apps.shopwatcher.core.shop_watcher import ShopWatcher
+from src.apps.shopwatcher.core.shop_detector import ShopDetector
 from src.apps.shopwatcher.core.socket_handler import ShopWatcherHandler
 from src.connection.websocket_client import WebSocketClient
 from src.core.constants import (
@@ -27,7 +27,7 @@ logger = setup_logger(SCRIPT_NAME, "DEBUG")
 twm = TerminalWindowManager()
 
 
-async def run_main_task(slot: int, shopwatcher: ShopWatcher):
+async def run_main_task(slot: int, shopwatcher: ShopDetector):
     mute_ssim_prints.set()
     main_task = asyncio.create_task(shopwatcher.scan_for_shop_and_notify())
     await secondary_windows_spawned.wait()
@@ -56,7 +56,7 @@ async def main():
         ws_client = WebSocketClient(STREAMERBOT_WS_URL, logger)
         await ws_client.establish_connection()
 
-        shopwatcher = ShopWatcher(logger, socket_server_handler, ws_client)
+        shopwatcher = ShopDetector(socket_server_handler, logger, ws_client)
 
         await run_main_task(slot, shopwatcher)
 

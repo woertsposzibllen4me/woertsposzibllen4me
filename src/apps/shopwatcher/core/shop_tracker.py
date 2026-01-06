@@ -44,29 +44,6 @@ class ShopTracker:
         self.logger = logger
         self.ws = ws_client
 
-    async def _reset_flags(self) -> None:
-        for key in self.flags:
-            self.flags[key] = False
-
-    async def _track_shop_open_duration(self) -> None:
-        while self.shop_is_currently_open:
-            elapsed_time = round(time.time() - self.shop_opening_time)
-            print(f"Shop has been open for {elapsed_time} seconds")
-            if (
-                elapsed_time >= self.SHORT_OPEN_THRESHOLD_SECONDS
-                and not self.flags["reacted_to_open_short"]
-            ):
-                await self._react_to_shop_staying_open("short")
-                self.flags["reacted_to_open_short"] = True
-
-            if (
-                elapsed_time >= self.LONG_OPEN_THRESHOLD_SECONDS
-                and not self.flags["reacted_to_open_long"]
-            ):
-                await self._react_to_shop_staying_open("long", seconds=elapsed_time)
-                self.flags["reacted_to_open_long"] = True
-            await asyncio.sleep(1)
-
     async def react_to_opened_shop(self) -> None:
         """Signal that the shop has opened and start tracking its duration."""
         if self.shop_is_currently_open:
@@ -94,24 +71,6 @@ class ShopTracker:
         await self.ws.send_json_requests(DSLR_SHOW)
         await self._reset_flags()
 
-    async def _react_to_short_shop_opening(self) -> None:
-        await self.ws.send_json_requests(BRB_BUYING_MILK_SHOW)
-
-    async def _react_to_long_shop_opening(self, seconds: float) -> None:
-        await self.ws.send_json_requests(BRB_BUYING_MILK_HIDE)
-        start_time = time.time()
-        while True:
-            elapsed_time = time.time() - start_time + seconds
-            seconds_only = round(elapsed_time)
-            formatted_time = f"{seconds_only:02d}"
-            async with aiofiles.open(TIME_SINCE_SHOP_OPENED_TXT, "w") as file:
-                await file.write(
-                    f"Bro you've been in the shop for {formatted_time} seconds,"
-                    " just buy something..."
-                )
-            await self.ws.send_json_requests(DISPLAY_TIME_SINCE_SHOP_OPENED)
-            await asyncio.sleep(1)
-
     async def _react_to_shop_staying_open(
         self, duration: str, seconds: float | None = None
     ) -> None:
@@ -129,3 +88,44 @@ class ShopTracker:
                 await self._react_to_long_shop_opening(seconds)
             else:
                 print("not reacting !")
+
+    async def _reset_flags(self) -> None:
+        for key in self.flags:
+            self.flags[key] = False
+
+    async def _track_shop_open_duration(self) -> None:
+        while self.shop_is_currently_open:
+            elapsed_time = round(time.time() - self.shop_opening_time)
+            print(f"Shop has been open for {elapsed_time} seconds")
+            if (
+                elapsed_time >= self.SHORT_OPEN_THRESHOLD_SECONDS
+                and not self.flags["reacted_to_open_short"]
+            ):
+                await self._react_to_shop_staying_open("short")
+                self.flags["reacted_to_open_short"] = True
+
+            if (
+                elapsed_time >= self.LONG_OPEN_THRESHOLD_SECONDS
+                and not self.flags["reacted_to_open_long"]
+            ):
+                await self._react_to_shop_staying_open("long", seconds=elapsed_time)
+                self.flags["reacted_to_open_long"] = True
+            await asyncio.sleep(1)
+
+    async def _react_to_short_shop_opening(self) -> None:
+        await self.ws.send_json_requests(BRB_BUYING_MILK_SHOW)
+
+    async def _react_to_long_shop_opening(self, seconds: float) -> None:
+        await self.ws.send_json_requests(BRB_BUYING_MILK_HIDE)
+        start_time = time.time()
+        while True:
+            elapsed_time = time.time() - start_time + seconds
+            seconds_only = round(elapsed_time)
+            formatted_time = f"{seconds_only:02d}"
+            async with aiofiles.open(TIME_SINCE_SHOP_OPENED_TXT, "w") as file:
+                await file.write(
+                    f"Bro you've been in the shop for {formatted_time} seconds,"
+                    " just buy something..."
+                )
+            await self.ws.send_json_requests(DISPLAY_TIME_SINCE_SHOP_OPENED)
+            await asyncio.sleep(1)

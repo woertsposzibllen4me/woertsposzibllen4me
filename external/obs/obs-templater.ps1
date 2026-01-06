@@ -1,4 +1,4 @@
-# Used to create an editable template from a real OBS config file
+# Used to create an editable template from a OBS scenes file
 
 $script:DataPath = $env:STREAMING_DATA_PATH # Change this manually if needed
 
@@ -56,11 +56,11 @@ function ConvertFrom-ObsTemplate {
   Write-Host "Real config saved: $OutputFile" -ForegroundColor Yellow
 }
 
-Write-Host "OBS Templater functions loaded!" -ForegroundColor Green
+Write-Host "Obs Templater functions loaded!" -ForegroundColor Green
 Write-Host "Current paths:" -ForegroundColor Cyan
 Write-Host "  Data Path: $($script:DataPath ?? 'Not set')" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Usage:" -ForegroundColor Cyan
-Write-Host "  ConvertTo-OBSTemplate 'scenes.json'             # Creates scenes.template.json (VC version)" -ForegroundColor Gray
-Write-Host "  ConvertFrom-OBSTemplate 'scenes.template.json'  # Creates scenes.json" -ForegroundColor Gray
+Write-Host "  ConvertTo-ObsTemplate 'scenes.json'             # Creates scenes.template.json (VC version)" -ForegroundColor Gray
+Write-Host "  ConvertFrom-ObsTemplate 'scenes.template.json'  # Creates scenes.json" -ForegroundColor Gray
 

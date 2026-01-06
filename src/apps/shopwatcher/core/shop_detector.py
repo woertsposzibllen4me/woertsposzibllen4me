@@ -1,4 +1,4 @@
-"""Used to detect the shop appearing on the screen and set up further logic."""
+"""Used to detect the shop appearing on the screen and manage further logic."""
 
 import asyncio
 from logging import Logger
@@ -80,7 +80,7 @@ class ShopDetector:
                 print(f"SSIM: {match_value:.6f}", end="\r")
 
             if match_value >= self.SSIM_SIMILARITY_THRESHOLD:
-                await self.shop_tracker.open_shop()
+                await self.shop_tracker.react_to_opened_shop()
             elif match_value < self.SSIM_SIMILARITY_THRESHOLD:
-                await self.shop_tracker.close_shop()
+                await self.shop_tracker.react_to_closed_shop()
             await asyncio.sleep(0.01)

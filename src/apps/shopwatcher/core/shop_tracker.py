@@ -67,7 +67,7 @@ class ShopTracker:
                 self.flags["reacted_to_open_long"] = True
             await asyncio.sleep(1)
 
-    async def open_shop(self) -> None:
+    async def react_to_opened_shop(self) -> None:
         """Signal that the shop has opened and start tracking its duration."""
         if self.shop_is_currently_open:
             return
@@ -76,9 +76,10 @@ class ShopTracker:
         self.shop_open_duration_task = asyncio.create_task(
             self._track_shop_open_duration()
         )
-        await self._react_to_shop("opened")
+        print("Shop just opened")
+        await self.ws.send_json_requests(DSLR_HIDE)
 
-    async def close_shop(self) -> None:
+    async def react_to_closed_shop(self) -> None:
         """Signal that the shop has closed and stop tracking its duration."""
         if not self.shop_is_currently_open:
             return
@@ -89,7 +90,8 @@ class ShopTracker:
                 await self.shop_open_duration_task
             except asyncio.CancelledError:
                 print("Shop open duration tracking stopped.")
-        await self._react_to_shop("closed")
+        print("Shop just closed")
+        await self.ws.send_json_requests(DSLR_SHOW)
         await self._reset_flags()
 
     async def _react_to_short_shop_opening(self) -> None:
@@ -127,10 +129,3 @@ class ShopTracker:
                 await self._react_to_long_shop_opening(seconds)
             else:
                 print("not reacting !")
-
-    async def _react_to_shop(self, status: str) -> None:
-        print(f"Shop just {status}")
-        if status == "opened":
-            await self.ws.send_json_requests(DSLR_HIDE)
-        elif status == "closed":
-            await self.ws.send_json_requests(DSLR_SHOW)

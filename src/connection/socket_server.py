@@ -1,9 +1,11 @@
 """Base handler for socket server implementations.
 
 This module provides the BaseHandler class which implements common socket server
-functionality including connection handling, acknowledgment sending, and message
-routing. Subclasses should override _process_message() to implement specific
-message handling logic.
+functionality. Mainly, it is used to allow subprocesses to stop conducting their main
+logic unpon receiving a "stop message", which sets an asyncio event.
+
+Subclasses should override on_message() to implement custom message handling logic
+beyond logging and ack send.
 """
 
 import asyncio
@@ -43,11 +45,8 @@ class BaseHandler:
         self._writer: StreamWriter | None = None
 
         if not MIN_SUGGESTED_PORT <= port <= MAX_SUGGESTED_PORT:
-            self.logger.warning(f"""port {port} should rather be between
-                                {MIN_SUGGESTED_PORT} and {MAX_SUGGESTED_PORT}""")
-            print(
-                f"Please use a port between {MIN_SUGGESTED_PORT} and {MAX_SUGGESTED_PORT}"  # noqa: E501
-            )
+            self.logger.warning(f"""port {port} is outside the suggested port range of
+                                {MIN_SUGGESTED_PORT} to {MAX_SUGGESTED_PORT}""")
 
     async def _handle_client(self) -> None:
         if self._reader is None or self._writer is None:
@@ -62,23 +61,11 @@ class BaseHandler:
                 self.logger.info("Socket client disconnected")
                 break
             message = data.decode()
-            await self._handle_message(message)
+            await self.handle_message(message)
         self._writer.close()
         await self._writer.wait_closed()
 
-    async def _handle_message(self, message: str) -> None:
-        if message == self.stop_message:
-            await self._handle_stop_message()
-        else:
-            await self.process_message(message)
-
-    async def _handle_stop_message(self) -> None:
-        self.stop_event.set()
-        self.logger.info("Socket received stop message")
-        print("Socket received stop message")
-        await self._send_ack()
-
-    async def process_message(self, message: str) -> None:
+    async def handle_message(self, message: str) -> None:
         """Process incoming message using template method pattern.
 
         Logs the message, sends acknowledgment, then delegates to hook for
@@ -90,9 +77,14 @@ class BaseHandler:
         """
         self.logger.info(f"Socket received: {message}")
         await self._send_ack()
-        await self._process_message(message)
 
-    async def _process_message(self, _message: str) -> None:
+        if message == self.stop_message:
+            self.stop_event.set()
+            self.logger.info("Socket received stop message")
+        else:
+            await self.on_message(message)
+
+    async def on_message(self, _message: str) -> None:
         """Conduct subclass-specific message processing.
 
         Override this method in subclasses to implement custom message handling logic.

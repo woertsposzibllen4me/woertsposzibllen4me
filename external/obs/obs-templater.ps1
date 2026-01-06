@@ -8,7 +8,7 @@ $script:DataPath = if ($script:DataPath) {
   $null
 }
 
-function ConvertTo-OBSTemplate {
+function ConvertTo-ObsTemplate {
   param(
     [Parameter(Mandatory=$true)]
     [string]$InputFile
@@ -30,7 +30,7 @@ function ConvertTo-OBSTemplate {
   Write-Host "Template saved: $OutputFile" -ForegroundColor Yellow
 }
 
-function ConvertFrom-OBSTemplate {
+function ConvertFrom-ObsTemplate {
   param(
     [Parameter(Mandatory=$true)]
     [string]$InputFile

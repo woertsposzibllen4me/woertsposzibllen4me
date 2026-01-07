@@ -3,6 +3,17 @@
 $script:DataPath = $env:STREAMING_DATA_PATH
 $script:RepoPath = $env:STREAMING_REPO_PATH
 
+# Validate environment setup
+if (-not $script:RepoPath) {
+  throw "STREAMING_REPO_PATH environment variable is not set. Please set it
+    before running this script."
+}
+
+if (-not $script:DataPath) {
+  throw "Warning: STREAMING_DATA_PATH environment variable is not set. Please
+    set it before running this script."
+}
+
 # Normalize paths to use forward slashes and trim trailing slashes
 $script:DataPath = if ($script:DataPath) {
   ($script:DataPath -replace '\\', '/').TrimEnd('/')
@@ -16,7 +27,6 @@ $script:RepoPath = if ($script:RepoPath) {
   $null
 }
 
-$script:CurrentPath = Get-Location
 $script:DefaultVcPath = "external/obs/version-control"
 
 function ConvertTo-ObsTemplate {
@@ -28,15 +38,10 @@ function ConvertTo-ObsTemplate {
     [string]$VcRelativePath = $script:DefaultVcPath
   )
 
-  # Validate environment setup
-  if (-not $script:RepoPath) {
-    throw "STREAMING_REPO_PATH environment variable is not set. Please set it
-    before running this function."
-  }
-
   # Convert input to absolute path
   $InputFile = (Resolve-Path $InputFile).Path
   $inputFileName = Split-Path $InputFile -Leaf
+  $inputDirectory = Split-Path $InputFile -Parent
   $templateFileName = $inputFileName -replace "\.json$", ".vc-template.json"
 
   Write-Host "Creating template from real config..." -ForegroundColor Green
@@ -46,37 +51,33 @@ function ConvertTo-ObsTemplate {
   $vcFullPath = Join-Path ($script:RepoPath -replace '/', '\') $VcRelativePath
   $vcTemplatePath = Join-Path $vcFullPath $templateFileName
 
+  Write-Host "Output: $vcTemplatePath" -ForegroundColor Gray
+
   # Ensure the VC directory exists
   if (-not (Test-Path $vcFullPath)) {
     New-Item -ItemType Directory -Path $vcFullPath -Force | Out-Null
     Write-Host "Created VC directory: $vcFullPath" -ForegroundColor Cyan
   }
 
-  Write-Host "Output: $vcTemplatePath" -ForegroundColor Gray
-
   # CREATE BACKUP FIRST
   $backupFileName = $inputFileName -replace "\.json$", ".backup.json"
   $backupPath = Join-Path $vcFullPath $backupFileName
-
   Copy-Item $InputFile $backupPath -Force
   Write-Host "Backup saved: $backupPath" -ForegroundColor Magenta
 
   # Remove existing symlink before reading/writing anything
-  $symlinkPath = Join-Path $script:CurrentPath $templateFileName
+  $symlinkPath = Join-Path $inputDirectory $templateFileName
   if (Test-Path $symlinkPath) {
     Remove-Item $symlinkPath -Force
-    Write-Host "Removed existing symlink" -ForegroundColor Gray
+    Write-Host "Removed existing template/symlink" -ForegroundColor Gray
   }
 
   # Read and process content
   $content = Get-Content $InputFile -Raw
 
+  # Replace actual paths with placeholders
   $content = $content -replace [regex]::Escape($script:RepoPath), "{{STREAMING_REPO_PATH}}"
-
-  if ($script:DataPath) {
-    $content = $content -replace [regex]::Escape($script:DataPath), "{{STREAMING_DATA_PATH}}"
-  }
-
+  $content = $content -replace [regex]::Escape($script:DataPath), "{{STREAMING_DATA_PATH}}"
   $content | Set-Content $vcTemplatePath -Encoding UTF8
   Write-Host "Template saved: $vcTemplatePath" -ForegroundColor Yellow
 
@@ -91,12 +92,6 @@ function ConvertFrom-ObsTemplate {
     [string]$InputFile
   )
 
-  # Validate environment setup
-  if (-not $script:RepoPath) {
-    throw "STREAMING_REPO_PATH environment variable is not set. Please set it
-    before running this function."
-  }
-
   $OutputFile = $InputFile -replace "\.vc-template\.", "."
 
   Write-Host "Creating real config from template..." -ForegroundColor Green
@@ -105,18 +100,9 @@ function ConvertFrom-ObsTemplate {
 
   $content = Get-Content $InputFile -Raw
 
-  # Validate DataPath if template uses it
-  if ($content -match "{{STREAMING_DATA_PATH}}" -and -not $script:DataPath) {
-    throw "Template contains {{STREAMING_DATA_PATH}} but STREAMING_DATA_PATH
-    environment variable is not set"
-  }
-
   # Replace placeholders
   $content = $content -replace "{{STREAMING_REPO_PATH}}", $script:RepoPath
-
-  if ($script:DataPath) {
-    $content = $content -replace "{{STREAMING_DATA_PATH}}", $script:DataPath
-  }
+  $content = $content -replace "{{STREAMING_DATA_PATH}}", $script:DataPath
 
   $content | Set-Content $OutputFile -Encoding UTF8
   Write-Host "Real config saved: $OutputFile" -ForegroundColor Yellow

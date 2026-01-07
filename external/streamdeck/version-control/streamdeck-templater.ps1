@@ -13,7 +13,8 @@ $script:RepoPath = if ($script:RepoPath) {
   $null
 }
 
-$script:DefaultVcPath = "external/streamdeck/version-control"
+$script:DefaultVcsPath = "external/streamdeck/version-control"
+$script:StreamDeckBasePath = "$env:APPDATA\Elgato\StreamDeck\ProfilesV2"
 
 function ConvertTo-StreamDeckTemplate {
   param(
@@ -21,39 +22,43 @@ function ConvertTo-StreamDeckTemplate {
     [string]$InputFile,
 
     [Parameter(Mandatory=$false)]
-    [string]$VcRelativePath = $script:DefaultVcPath
+    [string]$VcsRelativePath = $script:DefaultVcsPath
   )
-
 
   # Convert input to absolute path
   $InputFile = (Resolve-Path $InputFile).Path
   $inputFileName = Split-Path $InputFile -Leaf
   $inputDirectory = Split-Path $InputFile -Parent
-  $templateFileName = $inputFileName -replace "\.json$", ".vc-template.json"
+  $templateFileName = $inputFileName -replace "\.json$", ".vcs-template.json"
 
   Write-Host "Creating StreamDeck template from real config..." -ForegroundColor Green
   Write-Host "Input:  $InputFile" -ForegroundColor Gray
 
-  # Setup paths
-  $vcFullPath = Join-Path ($script:RepoPath -replace '/', '\') $VcRelativePath
-  $vcTemplatePath = Join-Path $vcFullPath $templateFileName
+  # Calculate relative path from StreamDeck base to input file
+  $relativePath = $inputDirectory -replace [regex]::Escape($script:StreamDeckBasePath), ""
+  $relativePath = $relativePath.TrimStart('\')
 
-  Write-Host "Output: $vcTemplatePath" -ForegroundColor Gray
+  # Setup paths
+  $vcsFullPath = Join-Path ($script:RepoPath -replace '/', '\') $VcsRelativePath
+  $vcsMirroredPath = Join-Path $vcsFullPath $relativePath
+  $vcsTemplatePath = Join-Path $vcsMirroredPath $templateFileName
+
+  Write-Host "Output: $vcsTemplatePath" -ForegroundColor Gray
 
   $forwardSlashPath = $script:RepoPath
   $backslashPath = $script:RepoPath -replace '/', '\\'
   $escapedForward = [regex]::Escape($forwardSlashPath)
   $escapedBackslash = [regex]::Escape($backslashPath)
 
-  # Ensure the VC directory exists
-  if (-not (Test-Path $vcFullPath)) {
-    New-Item -ItemType Directory -Path $vcFullPath -Force | Out-Null
-    Write-Host "Created VC directory: $vcFullPath" -ForegroundColor Cyan
+  # Ensure the VCS mirrored directory exists
+  if (-not (Test-Path $vcsMirroredPath)) {
+    New-Item -ItemType Directory -Path $vcsMirroredPath -Force | Out-Null
+    Write-Host "Created VCs directory: $vcsMirroredPath" -ForegroundColor Cyan
   }
 
   # CREATE BACKUP FIRST
   $backupFileName = $inputFileName -replace "\.json$", ".backup.json"
-  $backupPath = Join-Path $vcFullPath $backupFileName
+  $backupPath = Join-Path $vcsMirroredPath $backupFileName
   Copy-Item $InputFile $backupPath -Force
   Write-Host "Backup saved: $backupPath" -ForegroundColor Magenta
 
@@ -61,7 +66,7 @@ function ConvertTo-StreamDeckTemplate {
   $symlinkPath = Join-Path $inputDirectory $templateFileName
   if (Test-Path $symlinkPath) {
     Remove-Item $symlinkPath -Force
-    Write-Host "Removed existing template/symlink" -ForegroundColor Gray
+    Write-Host "Removed existing symlink" -ForegroundColor Gray
   }
 
   # Read and process content
@@ -70,12 +75,12 @@ function ConvertTo-StreamDeckTemplate {
   # Replace both versions with the placeholder
   $content = $content -replace $escapedForward, "{{STREAMING_REPO_PATH}}"
   $content = $content -replace $escapedBackslash, "{{STREAMING_REPO_PATH}}"
-  $content | Set-Content $vcTemplatePath -Encoding UTF8
-  Write-Host "Template saved: $vcTemplatePath" -ForegroundColor Yellow
+  $content | Set-Content $vcsTemplatePath -Encoding UTF8
+  Write-Host "Template saved: $vcsTemplatePath" -ForegroundColor Yellow
 
-  # Create symlink in input directory pointing to VC directory
-  New-Item -ItemType SymbolicLink -Path $symlinkPath -Target $vcTemplatePath | Out-Null
-  Write-Host "Created symlink: $symlinkPath -> $vcTemplatePath" -ForegroundColor Green
+  # Create symlink in mirrored VCS directory pointing to template
+  New-Item -ItemType SymbolicLink -Path $symlinkPath -Target $vcsTemplatePath | Out-Null
+  Write-Host "Created symlink: $symlinkPath -> $vcsTemplatePath" -ForegroundColor Green
 }
 
 function ConvertFrom-StreamDeckTemplate {
@@ -103,7 +108,8 @@ function ConvertFrom-StreamDeckTemplate {
 Write-Host "StreamDeck Templater functions loaded!" -ForegroundColor Green
 Write-Host "Current paths:" -ForegroundColor Cyan
 Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')" -ForegroundColor Gray
-Write-Host "  The script should be used in a $env:APPDATA\Elgato\StreamDeck\ProfilesV2\#num\Profiles\#num folder" -ForegroundColor Gray
+Write-Host "  StreamDeck Base: $script:StreamDeckBasePath" -ForegroundColor Gray
 Write-Host "Usage:" -ForegroundColor Cyan
-Write-Host "  ConvertTo-StreamDeckTemplate 'manifest.json'                # Creates manifest.vc-template.json" -ForegroundColor Gray
-Write-Host "  ConvertFrom-StreamDeckTemplate 'manifest.vc-template.json'  # Creates manifest.json" -ForegroundColor Gray
+Write-Host "  ConvertTo-StreamDeckTemplate 'manifest.json'                # Creates manifest.vcs-template.json" -ForegroundColor Gray
+Write-Host "  ConvertFrom-StreamDeckTemplate 'manifest.vcs-template.json' # Creates manifest.json" -ForegroundColor Gray
+

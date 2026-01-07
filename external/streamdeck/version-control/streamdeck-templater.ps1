@@ -24,13 +24,19 @@ function ConvertTo-StreamDeckTemplate {
     [Parameter(Mandatory=$false)]
     [string]$VcsRelativePath = $script:DefaultVcsPath
   )
-
-  # Convert input to absolute path
   $InputFile = (Resolve-Path $InputFile).Path
   $inputFileName = Split-Path $InputFile -Leaf
   $inputDirectory = Split-Path $InputFile -Parent
-  $templateFileName = $inputFileName -replace "\.json$", ".vcs-template.json"
+  $expectedPath = $script:StreamDeckBasePath
 
+  if ($inputDirectory -notmatch [regex]::Escape($expectedPath)) {
+    throw "This function must target files in: $expectedPath`nCurrent target: $inputDirectory"
+  }
+  if ($InputFile -notmatch '\.json$') {
+    throw "Input file must be a .json file, got: $InputFile"
+  }
+
+  $templateFileName = $inputFileName -replace "\.json$", ".vcs-template.json"
   Write-Host "Creating StreamDeck template from real config..." -ForegroundColor Green
   Write-Host "Input:  $InputFile" -ForegroundColor Gray
 
@@ -88,6 +94,16 @@ function ConvertFrom-StreamDeckTemplate {
     [Parameter(Mandatory=$true)]
     [string]$InputFile
   )
+  $InputFile = (Resolve-Path $InputFile).Path
+  $inputDirectory = Split-Path $InputFile -Parent
+  $expectedPath = $script:StreamDeckBasePath
+
+  if ($inputDirectory -notmatch [regex]::Escape($expectedPath)) {
+    throw "This function must target files in: $expectedPath`nCurrent target: $inputDirectory"
+  }
+  if ($InputFile -notmatch '\.vcs-template\.json$') {
+    throw "Input file must be a .vcs-template.json file, got: $InputFile"
+  }
 
   $OutputFile = $InputFile -replace "\.template\.", "."
 
@@ -106,10 +122,10 @@ function ConvertFrom-StreamDeckTemplate {
 }
 
 Write-Host "StreamDeck Templater functions loaded!" -ForegroundColor Green
-Write-Host "Current paths:" -ForegroundColor Cyan
 Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')" -ForegroundColor Gray
-Write-Host "  StreamDeck Base: $script:StreamDeckBasePath" -ForegroundColor Gray
+Write-Host "  Input files must be under: $script:StreamDeckBasePath" -ForegroundColor Gray
 Write-Host "Usage:" -ForegroundColor Cyan
-Write-Host "  ConvertTo-StreamDeckTemplate 'manifest.json'                # Creates manifest.vcs-template.json" -ForegroundColor Gray
+Write-Host "  ConvertTo-StreamDeckTemplate 'manifest.json'                # Creates vcs-template.json" -ForegroundColor Gray
+Write-Host "  ConvertTo-ObsTemplate 'manifest.json' 'custom/path'         # Uses custom VCS relative path in repo" -ForegroundColor Gray
 Write-Host "  ConvertFrom-StreamDeckTemplate 'manifest.vcs-template.json' # Creates manifest.json" -ForegroundColor Gray
 

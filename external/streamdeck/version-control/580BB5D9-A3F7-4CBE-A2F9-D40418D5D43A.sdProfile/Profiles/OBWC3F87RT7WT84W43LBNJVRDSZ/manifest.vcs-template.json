@@ -66,7 +66,7 @@
           "LinkedTitle": true,
           "Name": "WebSocket Message",
           "Settings": {
-            "body": "pregame_phase_detector start",
+            "body": "pregamespy start",
             "url": "ws://localhost:50000/subprocess"
           },
           "State": 0,
@@ -83,7 +83,7 @@
           "LinkedTitle": true,
           "Name": "WebSocket Message",
           "Settings": {
-            "body": "pregame_phase_detector stop",
+            "body": "pregamespy stop",
             "url": "ws://localhost:50000/subprocess"
           },
           "State": 0,
@@ -100,7 +100,7 @@
           "LinkedTitle": true,
           "Name": "WebSocket Message",
           "Settings": {
-            "body": "pregame_phase_detector unlock",
+            "body": "pregamespy unlock",
             "url": "ws://localhost:50000/subprocess"
           },
           "State": 0,
@@ -117,7 +117,7 @@
           "LinkedTitle": true,
           "Name": "WebSocket Message",
           "Settings": {
-            "body": "pregame_phase_detector test different message",
+            "body": "pregamespy test different message",
             "url": "ws://localhost:50000/subprocess"
           },
           "State": 0,
@@ -134,7 +134,7 @@
           "LinkedTitle": true,
           "Name": "WebSocket Message",
           "Settings": {
-            "body": "shop_watcher start",
+            "body": "shopwatcher start",
             "url": "ws://localhost:50000/subprocess"
           },
           "State": 0,
@@ -151,7 +151,7 @@
           "LinkedTitle": true,
           "Name": "WebSocket Message",
           "Settings": {
-            "body": "shop_watcher stop",
+            "body": "shopwatcher stop",
             "url": "ws://localhost:50000/subprocess"
           },
           "State": 0,
@@ -168,7 +168,7 @@
           "LinkedTitle": true,
           "Name": "WebSocket Message",
           "Settings": {
-            "body": "shop_watcher unlock",
+            "body": "shopwatcher unlock",
             "url": "ws://localhost:50000/subprocess"
           },
           "State": 0,

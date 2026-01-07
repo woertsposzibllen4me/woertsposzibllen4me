@@ -28,6 +28,7 @@ $script:RepoPath = if ($script:RepoPath) {
 }
 
 $script:DefaultVcsPath = "external/obs/version-control/scenes"
+$script:ObsBasePath = Join-Path $env:APPDATA "obs-studio\basic\scenes"
 
 function ConvertTo-ObsTemplate {
   param(
@@ -37,13 +38,19 @@ function ConvertTo-ObsTemplate {
     [Parameter(Mandatory=$false)]
     [string]$VcsRelativePath = $script:DefaultVcsPath
   )
-
-  # Convert input to absolute path
   $InputFile = (Resolve-Path $InputFile).Path
   $inputFileName = Split-Path $InputFile -Leaf
   $inputDirectory = Split-Path $InputFile -Parent
-  $templateFileName = $inputFileName -replace "\.json$", ".vcs-template.json"
+  $expectedPath = $script:ObsBasePath
 
+  if ($inputDirectory -ne $expectedPath) {
+    throw "This function must target files in: $expectedPath`nCurrent target: $inputDirectory"
+  }
+  if ($InputFile -notmatch '\.json$') {
+    throw "Input file must be a .json file, got: $InputFile"
+  }
+
+  $templateFileName = $inputFileName -replace "\.json$", ".vcs-template.json"
   Write-Host "Creating template from real config..." -ForegroundColor Green
   Write-Host "Input:  $InputFile" -ForegroundColor Gray
 
@@ -92,6 +99,17 @@ function ConvertFrom-ObsTemplate {
     [string]$InputFile
   )
 
+  $InputFile = (Resolve-Path $InputFile).Path
+  $inputDirectory = Split-Path $InputFile -Parent
+  $expectedPath = $script:ObsBasePath
+
+  if ($inputDirectory -ne $expectedPath) {
+    throw "This function must target files in: $expectedPath`nCurrent target: $inputDirectory"
+  }
+  if ($InputFile -notmatch '\.vcs-template\.json$') {
+    throw "Input file must be a .vcs-template.json file, got: $InputFile"
+  }
+
   $OutputFile = $InputFile -replace "\.vcs-template\.", "."
 
   Write-Host "Creating real config from template..." -ForegroundColor Green
@@ -109,14 +127,12 @@ function ConvertFrom-ObsTemplate {
 }
 
 Write-Host "OBS Templater functions loaded!" -ForegroundColor Green
-Write-Host "Current paths:" -ForegroundColor Cyan
 Write-Host "  Data Path: $($script:DataPath ?? 'Not set')" -ForegroundColor Gray
 Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')" -ForegroundColor Gray
-Write-Host "  The script should be used in $env:APPDATA\obs-studio\basic\scenes" -ForegroundColor Gray
+Write-Host "  Input files must be under: $script:ObsBasePath" -ForegroundColor Gray
 Write-Host "  Default VCS Path: $script:DefaultVcsPath" -ForegroundColor Gray
-Write-Host ""
 Write-Host "Usage:" -ForegroundColor Cyan
-Write-Host "  ConvertTo-ObsTemplate 'Dota.json'                # Uses default VCS path, creates symlink" -ForegroundColor Gray
-Write-Host "  ConvertTo-ObsTemplate 'Dota.json' 'custom/path'  # Uses custom VCS path" -ForegroundColor Gray
-Write-Host "  ConvertFrom-ObsTemplate 'Dota.vcs-template.json'" -ForegroundColor Gray
+Write-Host "  ConvertTo-ObsTemplate 'scenes.json'                # Creates vcs-template.json -ForegroundColor Gray"
+Write-Host "  ConvertTo-ObsTemplate 'scenes.json' 'custom/path'  # Uses custom VCS relative path in repo" -ForegroundColor Gray
+Write-Host "  ConvertFrom-ObsTemplate 'scenes.vcs-template.json' # Creates scenes.json" -ForegroundColor Gray
 

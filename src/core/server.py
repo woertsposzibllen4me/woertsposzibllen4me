@@ -42,14 +42,18 @@ async def manage_subprocess(message: str):
         target = parts[0]
         instructions = parts[1].strip()
         if target not in SUBPROCESSES_PORTS:
-            raise ValueError(
+            error_msg = (
                 f" Unknown target {target} not in {list(SUBPROCESSES_PORTS.keys())}"
             )
+            logger.error(error_msg)
+            raise ValueError(error_msg)
     else:
-        raise ValueError(
-            "Invalid message format, must be at least two "
-            "separate words: target, instructions"
+        error_msg = (
+            "Invalid message format, must be at least two separate words: target,"
+            "instructions"
         )
+        logger.error(error_msg)
+        raise ValueError(error_msg)
 
     if instructions == "start":
         # Open the process in a new separate cli window: this is done to be

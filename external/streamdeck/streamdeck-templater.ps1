@@ -2,13 +2,17 @@
 
 $script:RepoPath = $env:STREAMING_REPO_PATH
 
+if (-not $script:RepoPath) {
+  throw "STREAMING_REPO_PATH environment variable is not set. Please set it
+    before running this script."
+}
+
 $script:RepoPath = if ($script:RepoPath) {
   ($script:RepoPath -replace '\\', '/').TrimEnd('/')
 } else {
   $null
 }
 
-$script:CurrentPath = Get-Location
 $script:DefaultVcPath = "external/streamdeck/version-control"
 
 function ConvertTo-StreamDeckTemplate {
@@ -20,25 +24,21 @@ function ConvertTo-StreamDeckTemplate {
     [string]$VcRelativePath = $script:DefaultVcPath
   )
 
-  # Validate environment setup
-  if (-not $script:RepoPath) {
-    throw "STREAMING_REPO_PATH environment variable is not set. Please set it
-    before running this function. "
-  }
 
   # Convert input to absolute path
   $InputFile = (Resolve-Path $InputFile).Path
   $inputFileName = Split-Path $InputFile -Leaf
-  $OutputFile = $InputFile -replace "\.json$", ".vc-template.json"
-  $templateFileName = Split-Path $OutputFile -Leaf
+  $inputDirectory = Split-Path $InputFile -Parent
+  $templateFileName = $inputFileName -replace "\.json$", ".vc-template.json"
 
   Write-Host "Creating StreamDeck template from real config..." -ForegroundColor Green
   Write-Host "Input:  $InputFile" -ForegroundColor Gray
-  Write-Host "Output: $OutputFile" -ForegroundColor Gray
 
   # Setup paths
   $vcFullPath = Join-Path ($script:RepoPath -replace '/', '\') $VcRelativePath
   $vcTemplatePath = Join-Path $vcFullPath $templateFileName
+
+  Write-Host "Output: $vcTemplatePath" -ForegroundColor Gray
 
   $forwardSlashPath = $script:RepoPath
   $backslashPath = $script:RepoPath -replace '/', '\\'
@@ -54,15 +54,14 @@ function ConvertTo-StreamDeckTemplate {
   # CREATE BACKUP FIRST
   $backupFileName = $inputFileName -replace "\.json$", ".backup.json"
   $backupPath = Join-Path $vcFullPath $backupFileName
-
   Copy-Item $InputFile $backupPath -Force
   Write-Host "Backup saved: $backupPath" -ForegroundColor Magenta
 
-  # Remove existing symlink before reading/writing anything
-  $symlinkPath = Join-Path $script:CurrentPath $templateFileName
+  # Remove existing template file or symlink in input directory
+  $symlinkPath = Join-Path $inputDirectory $templateFileName
   if (Test-Path $symlinkPath) {
     Remove-Item $symlinkPath -Force
-    Write-Host "Removed existing symlink" -ForegroundColor Gray
+    Write-Host "Removed existing template/symlink" -ForegroundColor Gray
   }
 
   # Read and process content
@@ -71,11 +70,10 @@ function ConvertTo-StreamDeckTemplate {
   # Replace both versions with the placeholder
   $content = $content -replace $escapedForward, "{{STREAMING_REPO_PATH}}"
   $content = $content -replace $escapedBackslash, "{{STREAMING_REPO_PATH}}"
+  $content | Set-Content $vcTemplatePath -Encoding UTF8
+  Write-Host "Template saved: $vcTemplatePath" -ForegroundColor Yellow
 
-  $content | Set-Content $OutputFile -Encoding UTF8
-  Write-Host "Template saved: $OutputFile" -ForegroundColor Yellow
-
-  # Create symlink
+  # Create symlink in input directory pointing to VC directory
   New-Item -ItemType SymbolicLink -Path $symlinkPath -Target $vcTemplatePath | Out-Null
   Write-Host "Created symlink: $symlinkPath -> $vcTemplatePath" -ForegroundColor Green
 }
@@ -85,12 +83,6 @@ function ConvertFrom-StreamDeckTemplate {
     [Parameter(Mandatory=$true)]
     [string]$InputFile
   )
-
-  # Validate environment setup
-  if (-not $script:RepoPath) {
-    throw "STREAMING_REPO_PATH environment variable is not set. Please set it
-    before running this function."
-  }
 
   $OutputFile = $InputFile -replace "\.template\.", "."
 
@@ -111,7 +103,7 @@ function ConvertFrom-StreamDeckTemplate {
 Write-Host "StreamDeck Templater functions loaded!" -ForegroundColor Green
 Write-Host "Current paths:" -ForegroundColor Cyan
 Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')" -ForegroundColor Gray
-Write-Host ""
+Write-Host "  The script should be used in a $env:APPDATA\Elgato\StreamDeck\ProfilesV2\#num\Profiles\#num folder" -ForegroundColor Gray
 Write-Host "Usage:" -ForegroundColor Cyan
 Write-Host "  ConvertTo-StreamDeckTemplate 'manifest.json'                # Creates manifest.vc-template.json" -ForegroundColor Gray
 Write-Host "  ConvertFrom-StreamDeckTemplate 'manifest.vc-template.json'  # Creates manifest.json" -ForegroundColor Gray

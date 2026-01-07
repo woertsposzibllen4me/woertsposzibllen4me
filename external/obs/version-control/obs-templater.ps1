@@ -133,7 +133,7 @@ Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')" -ForegroundColor Gray
 Write-Host "  Input files must be under: $script:ObsBasePath" -ForegroundColor Gray
 Write-Host "  Default VCS Path: $script:DefaultVcsPath" -ForegroundColor Gray
 Write-Host "Usage:" -ForegroundColor Cyan
-Write-Host "  ConvertTo-ObsTemplate 'scenes.json'                # Creates vcs-template.json -ForegroundColor Gray"
+Write-Host "  ConvertTo-ObsTemplate 'scenes.json'                # Creates vcs-template.json" -ForegroundColor Gray
 Write-Host "  ConvertTo-ObsTemplate 'scenes.json' 'custom/path'  # Uses custom VCS relative path in repo" -ForegroundColor Gray
 Write-Host "  ConvertFrom-ObsTemplate 'scenes.vcs-template.json' # Creates scenes.json" -ForegroundColor Gray
 

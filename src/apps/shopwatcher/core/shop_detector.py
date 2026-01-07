@@ -65,7 +65,7 @@ class ShopDetector:
 
     async def scan_for_shop_and_notify(self) -> None:
         """Scan for the shop on the screen and react when it appears/disappears."""
-        template = cv.imread(SHOP_TEMPLATE_IMAGE_PATH, cv.IMREAD_GRAYSCALE)
+        template = cv.imread(str(SHOP_TEMPLATE_IMAGE_PATH), cv.IMREAD_GRAYSCALE)
 
         while not self.socket_handler.stop_event.is_set():
             frame = await self._capture_window(SCREEN_CAPTURE_AREA)

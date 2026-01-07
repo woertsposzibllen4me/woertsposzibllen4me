@@ -9,12 +9,12 @@ from typing import final
 import aiofiles
 
 from src.apps.shopwatcher.core.constants import (
-    BRB_BUYING_MILK_HIDE,
-    BRB_BUYING_MILK_SHOW,
-    DISPLAY_TIME_SINCE_SHOP_OPENED,
-    DSLR_HIDE,
-    DSLR_SHOW,
-    TIME_SINCE_SHOP_OPENED_TXT,
+    BRB_BUYING_MILK_HIDE_PATH,
+    BRB_BUYING_MILK_SHOW_PATH,
+    DISPLAY_TIME_SINCE_SHOP_OPENED_PATH,
+    DSLR_HIDE_PATH,
+    DSLR_SHOW_PATH,
+    TIME_SINCE_SHOP_OPENED_TXT_PATH,
 )
 from src.connection.websocket_client import WebSocketClient
 
@@ -54,7 +54,7 @@ class ShopTracker:
             self._track_shop_open_duration()
         )
         print("Shop just opened")
-        await self.ws.send_json_requests(DSLR_HIDE)
+        await self.ws.send_json_requests(str(DSLR_HIDE_PATH))
 
     async def react_to_closed_shop(self) -> None:
         """Signal that the shop has closed and stop tracking its duration."""
@@ -68,7 +68,7 @@ class ShopTracker:
             except asyncio.CancelledError:
                 print("Shop open duration tracking stopped.")
         print("Shop just closed")
-        await self.ws.send_json_requests(DSLR_SHOW)
+        await self.ws.send_json_requests(str(DSLR_SHOW_PATH))
         await self._reset_flags()
 
     async def _react_to_shop_staying_open(
@@ -113,19 +113,19 @@ class ShopTracker:
             await asyncio.sleep(1)
 
     async def _react_to_short_shop_opening(self) -> None:
-        await self.ws.send_json_requests(BRB_BUYING_MILK_SHOW)
+        await self.ws.send_json_requests(str(BRB_BUYING_MILK_SHOW_PATH))
 
     async def _react_to_long_shop_opening(self, seconds: float) -> None:
-        await self.ws.send_json_requests(BRB_BUYING_MILK_HIDE)
+        await self.ws.send_json_requests(str(BRB_BUYING_MILK_HIDE_PATH))
         start_time = time.time()
         while True:
             elapsed_time = time.time() - start_time + seconds
             seconds_only = round(elapsed_time)
             formatted_time = f"{seconds_only:02d}"
-            async with aiofiles.open(TIME_SINCE_SHOP_OPENED_TXT, "w") as file:
+            async with aiofiles.open(TIME_SINCE_SHOP_OPENED_TXT_PATH, "w") as file:
                 await file.write(
                     f"Bro you've been in the shop for {formatted_time} seconds,"
                     " just buy something..."
                 )
-            await self.ws.send_json_requests(DISPLAY_TIME_SINCE_SHOP_OPENED)
+            await self.ws.send_json_requests(str(DISPLAY_TIME_SINCE_SHOP_OPENED_PATH))
             await asyncio.sleep(1)

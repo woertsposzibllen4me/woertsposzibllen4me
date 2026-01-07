@@ -237,38 +237,12 @@
     },
     {
       "prev_ver": 536870916,
-      "name": "pic - Teammate 1.1",
-      "uuid": "80618963-9a1a-485c-8c4c-d5002d2d2c1c",
-      "id": "image_source",
-      "versioned_id": "image_source",
-      "settings": {
-        "file": "{{STREAMING_DATA_PATH}}/Pictures/Retarded_mates/pic1.png"
-      },
-      "mixers": 0,
-      "sync": 0,
-      "flags": 0,
-      "volume": 1.0,
-      "balance": 0.5,
-      "enabled": true,
-      "muted": false,
-      "push-to-mute": false,
-      "push-to-mute-delay": 0,
-      "push-to-talk": false,
-      "push-to-talk-delay": 0,
-      "hotkeys": {},
-      "deinterlace_mode": 0,
-      "deinterlace_field_order": 0,
-      "monitoring_type": 0,
-      "private_settings": {}
-    },
-    {
-      "prev_ver": 536870916,
       "name": "METASCENE",
       "uuid": "d22e77b1-efc2-4123-816b-455d03d6b2ba",
       "id": "scene",
       "versioned_id": "scene",
       "settings": {
-        "id_counter": 33,
+        "id_counter": 57,
         "custom_size": false,
         "items": [
           {
@@ -329,7 +303,7 @@
           {
             "name": "DSLR Clone (Fade)",
             "source_uuid": "43fe1f49-0124-4f3c-94e2-758fc29ae7c6",
-            "visible": true,
+            "visible": false,
             "locked": false,
             "rot": 0.0,
             "scale_ref": {
@@ -340,18 +314,18 @@
             "bounds_type": 0,
             "bounds_align": 0,
             "bounds_crop": false,
-            "crop_left": 200,
+            "crop_left": 31,
             "crop_top": 0,
             "crop_right": 200,
             "crop_bottom": 0,
             "id": 23,
             "group_item_backup": true,
             "pos": {
-              "x": 1525.0,
+              "x": 1481.0,
               "y": 429.0
             },
             "pos_rel": {
-              "x": 1.046296238899231,
+              "x": 0.9648148417472839,
               "y": -0.20555555820465088
             },
             "scale": {
@@ -403,26 +377,26 @@
             "bounds_type": 0,
             "bounds_align": 0,
             "bounds_crop": false,
-            "crop_left": 200,
+            "crop_left": 31,
             "crop_top": 0,
             "crop_right": 200,
             "crop_bottom": 0,
             "id": 30,
             "group_item_backup": true,
             "pos": {
-              "x": 1525.0,
+              "x": 1481.0,
               "y": 429.0
             },
             "pos_rel": {
-              "x": 1.046296238899231,
+              "x": 0.9648148417472839,
               "y": -0.20555555820465088
             },
             "scale": {
-              "x": 0.25986841320991516,
+              "x": 0.25986844301223755,
               "y": 0.260185182094574
             },
             "scale_rel": {
-              "x": 0.25986841320991516,
+              "x": 0.25986844301223755,
               "y": 0.260185182094574
             },
             "bounds": {
@@ -455,7 +429,7 @@
               "y": 1080.0
             },
             "align": 5,
-            "bounds_type": 0,
+            "bounds_type": 2,
             "bounds_align": 0,
             "bounds_crop": false,
             "crop_left": 0,
@@ -481,12 +455,12 @@
               "y": 1.0
             },
             "bounds": {
-              "x": 0.0,
-              "y": 0.0
+              "x": 1920.0,
+              "y": 1080.0
             },
             "bounds_rel": {
-              "x": 0.0,
-              "y": 0.0
+              "x": 3.555555582046509,
+              "y": 2.0
             },
             "scale_filter": "disable",
             "blend_method": "default",
@@ -582,173 +556,6 @@
             },
             "pos_rel": {
               "x": -1.7777777910232544,
-              "y": -1.0
-            },
-            "scale": {
-              "x": 1.0,
-              "y": 1.0
-            },
-            "scale_rel": {
-              "x": 1.0,
-              "y": 1.0
-            },
-            "bounds": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "bounds_rel": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "scale_filter": "disable",
-            "blend_method": "default",
-            "blend_type": "normal",
-            "show_transition": {
-              "duration": 0
-            },
-            "hide_transition": {
-              "duration": 0
-            },
-            "private_settings": {
-              "collapsed": false
-            }
-          },
-          {
-            "name": "Teammates Zoom",
-            "source_uuid": "2e62770c-a1c4-4f91-8cd1-19e129b060c4",
-            "visible": false,
-            "locked": false,
-            "rot": 0.0,
-            "scale_ref": {
-              "x": 1920.0,
-              "y": 1080.0
-            },
-            "align": 0,
-            "bounds_type": 0,
-            "bounds_align": 0,
-            "bounds_crop": false,
-            "crop_left": 424,
-            "crop_top": 0,
-            "crop_right": 426,
-            "crop_bottom": 1039,
-            "id": 16,
-            "group_item_backup": true,
-            "pos": {
-              "x": -1576.65576171875,
-              "y": 38.0
-            },
-            "pos_rel": {
-              "x": -4.697510719299316,
-              "y": -0.9296296238899231
-            },
-            "scale": {
-              "x": 1.8907562494277954,
-              "y": 1.893617033958435
-            },
-            "scale_rel": {
-              "x": 1.8907562494277954,
-              "y": 1.893617033958435
-            },
-            "bounds": {
-              "x": 1.0,
-              "y": 1.0
-            },
-            "bounds_rel": {
-              "x": 0.0018518518190830946,
-              "y": 0.0018518518190830946
-            },
-            "scale_filter": "disable",
-            "blend_method": "default",
-            "blend_type": "normal",
-            "show_transition": {
-              "duration": 0
-            },
-            "hide_transition": {
-              "duration": 0
-            },
-            "private_settings": {}
-          },
-          {
-            "name": "pic - Teammate 1.1",
-            "source_uuid": "80618963-9a1a-485c-8c4c-d5002d2d2c1c",
-            "visible": false,
-            "locked": false,
-            "rot": 0.0,
-            "scale_ref": {
-              "x": 1920.0,
-              "y": 1080.0
-            },
-            "align": 5,
-            "bounds_type": 0,
-            "bounds_align": 0,
-            "bounds_crop": false,
-            "crop_left": 0,
-            "crop_top": 0,
-            "crop_right": 0,
-            "crop_bottom": 0,
-            "id": 18,
-            "group_item_backup": true,
-            "pos": {
-              "x": -2357.10107421875,
-              "y": 0.0
-            },
-            "pos_rel": {
-              "x": -6.14277982711792,
-              "y": -1.0
-            },
-            "scale": {
-              "x": 1.0,
-              "y": 1.0
-            },
-            "scale_rel": {
-              "x": 1.0,
-              "y": 1.0
-            },
-            "bounds": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "bounds_rel": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "scale_filter": "disable",
-            "blend_method": "default",
-            "blend_type": "normal",
-            "show_transition": {
-              "duration": 0
-            },
-            "hide_transition": {
-              "duration": 0
-            },
-            "private_settings": {}
-          },
-          {
-            "name": "Retarded mates",
-            "source_uuid": "e89bfa6e-44f1-41ef-9974-2e99ccdc7bb8",
-            "visible": true,
-            "locked": false,
-            "rot": 0.0,
-            "scale_ref": {
-              "x": 1920.0,
-              "y": 1080.0
-            },
-            "align": 5,
-            "bounds_type": 0,
-            "bounds_align": 0,
-            "bounds_crop": false,
-            "crop_left": 0,
-            "crop_top": 0,
-            "crop_right": 0,
-            "crop_bottom": 0,
-            "id": 15,
-            "group_item_backup": false,
-            "pos": {
-              "x": -2357.10107421875,
-              "y": 0.0
-            },
-            "pos_rel": {
-              "x": -6.14277982711792,
               "y": -1.0
             },
             "scale": {
@@ -893,8 +700,8 @@
             }
           },
           {
-            "name": "<< Ladies and gents, we might be back >>",
-            "source_uuid": "8cb4a555-bd0c-46bf-80ad-d192da84c5c8",
+            "name": "dota top bar zoom",
+            "source_uuid": "f8c02a54-baa6-48fe-b2a1-ea374989124d",
             "visible": false,
             "locked": false,
             "rot": 0.0,
@@ -906,27 +713,27 @@
             "bounds_type": 0,
             "bounds_align": 0,
             "bounds_crop": false,
-            "crop_left": 0,
+            "crop_left": 500,
             "crop_top": 0,
-            "crop_right": 0,
-            "crop_bottom": 0,
-            "id": 4,
+            "crop_right": 500,
+            "crop_bottom": 1036,
+            "id": 56,
             "group_item_backup": true,
             "pos": {
               "x": 0.0,
-              "y": 0.0
+              "y": 6.103515625e-5
             },
             "pos_rel": {
               "x": -1.7777777910232544,
-              "y": -1.0
+              "y": -0.9999998807907104
             },
             "scale": {
-              "x": 1.0,
-              "y": 1.0
+              "x": 2.08695650100708,
+              "y": 2.090909004211426
             },
             "scale_rel": {
-              "x": 1.0,
-              "y": 1.0
+              "x": 2.08695650100708,
+              "y": 2.090909004211426
             },
             "bounds": {
               "x": 0.0,
@@ -948,8 +755,63 @@
             "private_settings": {}
           },
           {
-            "name": "Transitions",
-            "source_uuid": "5725f44b-62aa-42b7-8169-8f9b1f7ca1c4",
+            "name": "pic - tard teammate 1",
+            "source_uuid": "8091b818-599b-4b15-8544-666c5e3b924a",
+            "visible": false,
+            "locked": false,
+            "rot": 0.0,
+            "scale_ref": {
+              "x": 1920.0,
+              "y": 1080.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 57,
+            "group_item_backup": true,
+            "pos": {
+              "x": 95.0,
+              "y": 3.000244140625
+            },
+            "pos_rel": {
+              "x": -1.6018518209457397,
+              "y": -0.9944440126419067
+            },
+            "scale": {
+              "x": 1.1048387289047241,
+              "y": 1.1081081628799438
+            },
+            "scale_rel": {
+              "x": 1.1048387289047241,
+              "y": 1.1081081628799438
+            },
+            "bounds": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "bounds_rel": {
+              "x": 0.0018518518190830946,
+              "y": 0.0018518518190830946
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          },
+          {
+            "name": "Retarded mates",
+            "source_uuid": "bcbb3772-9fa5-4706-9bca-031bd71929e1",
             "visible": true,
             "locked": false,
             "rot": 0.0,
@@ -965,15 +827,15 @@
             "crop_top": 0,
             "crop_right": 0,
             "crop_bottom": 0,
-            "id": 5,
+            "id": 53,
             "group_item_backup": false,
             "pos": {
               "x": 0.0,
-              "y": 0.0
+              "y": 6.103515625e-5
             },
             "pos_rel": {
               "x": -1.7777777910232544,
-              "y": -1.0
+              "y": -0.9999998807907104
             },
             "scale": {
               "x": 1.0,
@@ -1170,6 +1032,118 @@
             "private_settings": {
               "collapsed": false
             }
+          },
+          {
+            "name": "<< Ladies and gents, we might be back >>",
+            "source_uuid": "8cb4a555-bd0c-46bf-80ad-d192da84c5c8",
+            "visible": false,
+            "locked": false,
+            "rot": 0.0,
+            "scale_ref": {
+              "x": 1920.0,
+              "y": 1080.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 4,
+            "group_item_backup": true,
+            "pos": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "pos_rel": {
+              "x": -1.7777777910232544,
+              "y": -1.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "scale_rel": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "bounds_rel": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          },
+          {
+            "name": "Transitions",
+            "source_uuid": "5725f44b-62aa-42b7-8169-8f9b1f7ca1c4",
+            "visible": true,
+            "locked": false,
+            "rot": 0.0,
+            "scale_ref": {
+              "x": 1920.0,
+              "y": 1080.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 5,
+            "group_item_backup": false,
+            "pos": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "pos_rel": {
+              "x": -1.7777777910232544,
+              "y": -1.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "scale_rel": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "bounds_rel": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {
+              "collapsed": false
+            }
           }
         ]
       },
@@ -1191,14 +1165,14 @@
         "libobs.hide_scene_item.2": [],
         "libobs.show_scene_item.4": [],
         "libobs.hide_scene_item.4": [],
-        "libobs.show_scene_item.15": [],
-        "libobs.hide_scene_item.15": [],
         "libobs.show_scene_item.3": [],
         "libobs.hide_scene_item.3": [],
         "libobs.show_scene_item.5": [],
         "libobs.hide_scene_item.5": [],
         "libobs.show_scene_item.25": [],
-        "libobs.hide_scene_item.25": []
+        "libobs.hide_scene_item.25": [],
+        "libobs.show_scene_item.53": [],
+        "libobs.hide_scene_item.53": []
       },
       "deinterlace_mode": 0,
       "deinterlace_field_order": 0,
@@ -1505,37 +1479,6 @@
     },
     {
       "prev_ver": 536870916,
-      "name": "Teammates Zoom",
-      "uuid": "2e62770c-a1c4-4f91-8cd1-19e129b060c4",
-      "id": "source-clone",
-      "versioned_id": "source-clone",
-      "settings": {
-        "clone": "game: Dota 2"
-      },
-      "mixers": 255,
-      "sync": 0,
-      "flags": 0,
-      "volume": 1.0,
-      "balance": 0.5,
-      "enabled": true,
-      "muted": false,
-      "push-to-mute": false,
-      "push-to-mute-delay": 0,
-      "push-to-talk": false,
-      "push-to-talk-delay": 0,
-      "hotkeys": {
-        "libobs.mute": [],
-        "libobs.unmute": [],
-        "libobs.push-to-mute": [],
-        "libobs.push-to-talk": []
-      },
-      "deinterlace_mode": 0,
-      "deinterlace_field_order": 0,
-      "monitoring_type": 0,
-      "private_settings": {}
-    },
-    {
-      "prev_ver": 536870916,
       "name": "Dota2",
       "uuid": "bb4d26ee-2e45-4e77-a8b2-455e4a5218b6",
       "id": "scene",
@@ -1815,12 +1758,12 @@
       "push-to-talk-delay": 0,
       "hotkeys": {
         "OBSBasic.SelectScene": [],
-        "Move to origin": [],
-        "Move to buy phase": [],
         "libobs.show_scene_item.7": [],
         "libobs.hide_scene_item.7": [],
         "libobs.show_scene_item.17": [],
-        "libobs.hide_scene_item.17": []
+        "libobs.hide_scene_item.17": [],
+        "Move to origin": [],
+        "Move to buy phase": []
       },
       "deinterlace_mode": 0,
       "deinterlace_field_order": 0,
@@ -2551,6 +2494,65 @@
       "deinterlace_field_order": 0,
       "monitoring_type": 0,
       "private_settings": {}
+    },
+    {
+      "prev_ver": 536870916,
+      "name": "dota top bar zoom",
+      "uuid": "f8c02a54-baa6-48fe-b2a1-ea374989124d",
+      "id": "source-clone",
+      "versioned_id": "source-clone",
+      "settings": {
+        "clone": "Dota2",
+        "active_clone": false,
+        "audio": false
+      },
+      "mixers": 255,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {
+        "libobs.mute": [],
+        "libobs.unmute": [],
+        "libobs.push-to-mute": [],
+        "libobs.push-to-talk": []
+      },
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 536870916,
+      "name": "pic - tard teammate 1",
+      "uuid": "8091b818-599b-4b15-8544-666c5e3b924a",
+      "id": "image_source",
+      "versioned_id": "image_source",
+      "settings": {
+        "file": "{{STREAMING_DATA_PATH}}/Pictures/Retarded_mates/pic1.png"
+      },
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
     }
   ],
   "groups": [
@@ -2564,7 +2566,7 @@
         "id_counter": 0,
         "custom_size": true,
         "cx": 1920,
-        "cy": 710,
+        "cy": 1080,
         "items": [
           {
             "name": "Dota2 Clone",
@@ -2624,7 +2626,7 @@
           {
             "name": "DSLR Clone (Fade)",
             "source_uuid": "43fe1f49-0124-4f3c-94e2-758fc29ae7c6",
-            "visible": true,
+            "visible": false,
             "locked": false,
             "rot": 0.0,
             "scale_ref": {
@@ -2635,18 +2637,18 @@
             "bounds_type": 0,
             "bounds_align": 0,
             "bounds_crop": false,
-            "crop_left": 200,
+            "crop_left": 31,
             "crop_top": 0,
             "crop_right": 200,
             "crop_bottom": 0,
             "id": 23,
             "group_item_backup": false,
             "pos": {
-              "x": 1525.0,
+              "x": 1481.0,
               "y": 429.0
             },
             "pos_rel": {
-              "x": 1.046296238899231,
+              "x": 0.9648148417472839,
               "y": -0.20555555820465088
             },
             "scale": {
@@ -2698,26 +2700,26 @@
             "bounds_type": 0,
             "bounds_align": 0,
             "bounds_crop": false,
-            "crop_left": 200,
+            "crop_left": 31,
             "crop_top": 0,
             "crop_right": 200,
             "crop_bottom": 0,
             "id": 30,
             "group_item_backup": false,
             "pos": {
-              "x": 1525.0,
+              "x": 1481.0,
               "y": 429.0
             },
             "pos_rel": {
-              "x": 1.046296238899231,
+              "x": 0.9648148417472839,
               "y": -0.20555555820465088
             },
             "scale": {
-              "x": 0.25986841320991516,
+              "x": 0.25986844301223755,
               "y": 0.260185182094574
             },
             "scale_rel": {
-              "x": 0.25986841320991516,
+              "x": 0.25986844301223755,
               "y": 0.260185182094574
             },
             "bounds": {
@@ -3149,153 +3151,6 @@
     },
     {
       "prev_ver": 536870916,
-      "name": "Retarded mates",
-      "uuid": "e89bfa6e-44f1-41ef-9974-2e99ccdc7bb8",
-      "id": "group",
-      "versioned_id": "group",
-      "settings": {
-        "id_counter": 0,
-        "custom_size": true,
-        "cx": 784,
-        "cy": 74,
-        "items": [
-          {
-            "name": "Teammates Zoom",
-            "source_uuid": "2e62770c-a1c4-4f91-8cd1-19e129b060c4",
-            "visible": false,
-            "locked": false,
-            "rot": 0.0,
-            "scale_ref": {
-              "x": 1920.0,
-              "y": 1080.0
-            },
-            "align": 0,
-            "bounds_type": 0,
-            "bounds_align": 0,
-            "bounds_crop": false,
-            "crop_left": 424,
-            "crop_top": 0,
-            "crop_right": 426,
-            "crop_bottom": 1039,
-            "id": 16,
-            "group_item_backup": false,
-            "pos": {
-              "x": 780.4454345703125,
-              "y": 38.0
-            },
-            "pos_rel": {
-              "x": -0.3325084447860718,
-              "y": -0.9296296238899231
-            },
-            "scale": {
-              "x": 1.8907562494277954,
-              "y": 1.893617033958435
-            },
-            "scale_rel": {
-              "x": 1.8907562494277954,
-              "y": 1.893617033958435
-            },
-            "bounds": {
-              "x": 1.0,
-              "y": 1.0
-            },
-            "bounds_rel": {
-              "x": 0.0018518518190830946,
-              "y": 0.0018518518190830946
-            },
-            "scale_filter": "disable",
-            "blend_method": "default",
-            "blend_type": "normal",
-            "show_transition": {
-              "duration": 0
-            },
-            "hide_transition": {
-              "duration": 0
-            },
-            "private_settings": {}
-          },
-          {
-            "name": "pic - Teammate 1.1",
-            "source_uuid": "80618963-9a1a-485c-8c4c-d5002d2d2c1c",
-            "visible": false,
-            "locked": false,
-            "rot": 0.0,
-            "scale_ref": {
-              "x": 1920.0,
-              "y": 1080.0
-            },
-            "align": 5,
-            "bounds_type": 0,
-            "bounds_align": 0,
-            "bounds_crop": false,
-            "crop_left": 0,
-            "crop_top": 0,
-            "crop_right": 0,
-            "crop_bottom": 0,
-            "id": 18,
-            "group_item_backup": false,
-            "pos": {
-              "x": 6.103515625e-5,
-              "y": 0.0
-            },
-            "pos_rel": {
-              "x": -1.7777776718139648,
-              "y": -1.0
-            },
-            "scale": {
-              "x": 1.0,
-              "y": 1.0
-            },
-            "scale_rel": {
-              "x": 1.0,
-              "y": 1.0
-            },
-            "bounds": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "bounds_rel": {
-              "x": 0.0,
-              "y": 0.0
-            },
-            "scale_filter": "disable",
-            "blend_method": "default",
-            "blend_type": "normal",
-            "show_transition": {
-              "duration": 0
-            },
-            "hide_transition": {
-              "duration": 0
-            },
-            "private_settings": {}
-          }
-        ]
-      },
-      "mixers": 0,
-      "sync": 0,
-      "flags": 0,
-      "volume": 1.0,
-      "balance": 0.5,
-      "enabled": true,
-      "muted": false,
-      "push-to-mute": false,
-      "push-to-mute-delay": 0,
-      "push-to-talk": false,
-      "push-to-talk-delay": 0,
-      "hotkeys": {
-        "libobs.show_scene_item.16": [],
-        "libobs.hide_scene_item.16": [],
-        "libobs.show_scene_item.18": [],
-        "libobs.hide_scene_item.18": []
-      },
-      "deinterlace_mode": 0,
-      "deinterlace_field_order": 0,
-      "monitoring_type": 0,
-      "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-      "private_settings": {}
-    },
-    {
-      "prev_ver": 536870916,
       "name": "Music",
       "uuid": "b56b8e3b-e129-4709-8d8d-a284ebd0cb30",
       "id": "group",
@@ -3377,6 +3232,153 @@
       "hotkeys": {
         "libobs.show_scene_item.5": [],
         "libobs.hide_scene_item.5": []
+      },
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 536870916,
+      "name": "Retarded mates",
+      "uuid": "bcbb3772-9fa5-4706-9bca-031bd71929e1",
+      "id": "group",
+      "versioned_id": "group",
+      "settings": {
+        "id_counter": 0,
+        "custom_size": true,
+        "cx": 1920,
+        "cy": 92,
+        "items": [
+          {
+            "name": "dota top bar zoom",
+            "source_uuid": "f8c02a54-baa6-48fe-b2a1-ea374989124d",
+            "visible": false,
+            "locked": false,
+            "rot": 0.0,
+            "scale_ref": {
+              "x": 1920.0,
+              "y": 1080.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 500,
+            "crop_top": 0,
+            "crop_right": 500,
+            "crop_bottom": 1036,
+            "id": 56,
+            "group_item_backup": false,
+            "pos": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "pos_rel": {
+              "x": -1.7777777910232544,
+              "y": -1.0
+            },
+            "scale": {
+              "x": 2.08695650100708,
+              "y": 2.090909004211426
+            },
+            "scale_rel": {
+              "x": 2.08695650100708,
+              "y": 2.090909004211426
+            },
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "bounds_rel": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          },
+          {
+            "name": "pic - tard teammate 1",
+            "source_uuid": "8091b818-599b-4b15-8544-666c5e3b924a",
+            "visible": false,
+            "locked": false,
+            "rot": 0.0,
+            "scale_ref": {
+              "x": 1920.0,
+              "y": 1080.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 57,
+            "group_item_backup": false,
+            "pos": {
+              "x": 95.0,
+              "y": 3.00018310546875
+            },
+            "pos_rel": {
+              "x": -1.6018518209457397,
+              "y": -0.9944441318511963
+            },
+            "scale": {
+              "x": 1.1048387289047241,
+              "y": 1.1081081628799438
+            },
+            "scale_rel": {
+              "x": 1.1048387289047241,
+              "y": 1.1081081628799438
+            },
+            "bounds": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "bounds_rel": {
+              "x": 0.0018518518190830946,
+              "y": 0.0018518518190830946
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          }
+        ]
+      },
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {
+        "libobs.show_scene_item.56": [],
+        "libobs.hide_scene_item.56": [],
+        "libobs.show_scene_item.57": [],
+        "libobs.hide_scene_item.57": []
       },
       "deinterlace_mode": 0,
       "deinterlace_field_order": 0,

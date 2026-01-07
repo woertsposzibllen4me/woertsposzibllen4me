@@ -16,7 +16,7 @@ $script:RepoPath = if ($script:RepoPath) {
   $null
 }
 
-$script:ObsScenesPath = "$env:APPDATA\obs-studio\basic\scenes"
+$script:CurrentPath = Get-Location
 $script:DefaultVcPath = "external/obs/version-control"  # Default VC path in repo
 
 function ConvertTo-ObsTemplate {
@@ -46,9 +46,13 @@ function ConvertTo-ObsTemplate {
       New-Item -ItemType Directory -Path $vcFullPath -Force | Out-Null
       Write-Host "Created VC directory: $vcFullPath" -ForegroundColor Cyan
     }
-  }
 
-  Write-Host "Output: $vcTemplatePath" -ForegroundColor Gray
+    Write-Host "Output: $vcTemplatePath" -ForegroundColor Gray
+
+  } else {
+    $vcTemplatePath = Join-Path $script:CurrentPath $templateFileName
+    Write-Host "Warning: STREAMING_REPO_PATH not set, saving template locally" -ForegroundColor Yellow
+  }
 
   # CREATE BACKUP FIRST
   if ($script:RepoPath) {
@@ -56,21 +60,21 @@ function ConvertTo-ObsTemplate {
     $backupPath = Join-Path (Split-Path $vcTemplatePath -Parent) $backupFileName
     Copy-Item $InputFile $backupPath -Force
     Write-Host "Backup saved: $backupPath" -ForegroundColor Magenta
+  } else {
+    $backupPath = Join-Path $script:CurrentPath ($inputFileName -replace "\.json$", ".backup.json")
+    Copy-Item $InputFile $backupPath -Force
+    Write-Host "Backup saved locally, due to STREAMING_REPO_PATH not set: $backupPath" -ForegroundColor Magenta
   }
 
-  # Define symlink path in OBS scenes folder
-  $symlinkPath = Join-Path $script:ObsScenesPath $templateFileName
+  $symlinkPath = Join-Path $script:CurrentPath $templateFileName
 
-  # Remove existing symlink BEFORE reading/writing anything
+  # Remove existing symlink before reading/writing anything
   if (Test-Path $symlinkPath) {
     Remove-Item $symlinkPath -Force
-    Write-Host "Removed existing symlink in OBS scenes" -ForegroundColor Gray
+    Write-Host "Removed existing symlink" -ForegroundColor Gray
   }
 
-  # Read and transform content
   $content = Get-Content $InputFile -Raw
-
-  # Replace paths in order of specificity (more specific first)
   if ($script:RepoPath) {
     $content = $content -replace [regex]::Escape($script:RepoPath), "{{STREAMING_REPO_PATH}}"
   }
@@ -79,7 +83,6 @@ function ConvertTo-ObsTemplate {
     $content = $content -replace [regex]::Escape($script:DataPath), "{{STREAMING_DATA_PATH}}"
   }
 
-  # Write directly to VC location (no symlinks exist at this point)
   $content | Set-Content $vcTemplatePath -Encoding UTF8
   Write-Host "Template saved: $vcTemplatePath" -ForegroundColor Yellow
 
@@ -132,7 +135,7 @@ Write-Host "OBS Templater functions loaded!" -ForegroundColor Green
 Write-Host "Current paths:" -ForegroundColor Cyan
 Write-Host "  Data Path: $($script:DataPath ?? 'Not set')" -ForegroundColor Gray
 Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')" -ForegroundColor Gray
-Write-Host "  OBS Scenes: $script:ObsScenesPath" -ForegroundColor Gray
+Write-Host "  The script should be used in $env:APPDATA\obs-studio\basic\scenes" -ForegroundColor Gray
 Write-Host "  Default VC Path: $script:DefaultVcPath" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Usage:" -ForegroundColor Cyan

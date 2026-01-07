@@ -1,6 +1,7 @@
 # Used to create an editable template from a StreamDeck "manifest.json" profile file
 
 $script:RepoPath = $env:STREAMING_REPO_PATH
+$script:PrettierPath = Join-Path $env:LOCALAPPDATA "nvim-data\mason\bin\prettier.cmd"
 
 if (-not $script:RepoPath) {
   throw "STREAMING_REPO_PATH environment variable is not set. Please set it
@@ -15,6 +16,19 @@ $script:RepoPath = if ($script:RepoPath) {
 
 $script:DefaultVcsPath = "external/streamdeck/version-control"
 $script:StreamDeckBasePath = "$env:APPDATA\Elgato\StreamDeck\ProfilesV2"
+
+function Format-JsonWithPrettier {
+  param([string]$FilePath)
+
+  if (-not (Test-Path $script:PrettierPath)) {
+    Write-Host "Warning: Prettier not found at $script:PrettierPath.
+    Skipping formatting." -ForegroundColor Yellow
+    return
+  }
+
+  Write-Host "Formatting with Prettier..." -ForegroundColor Cyan
+  & $script:PrettierPath --write $FilePath
+}
 
 function ConvertTo-StreamDeckTemplate {
   param(
@@ -82,6 +96,7 @@ function ConvertTo-StreamDeckTemplate {
   $content = $content -replace $escapedForward, "{{STREAMING_REPO_PATH}}"
   $content = $content -replace $escapedBackslash, "{{STREAMING_REPO_PATH}}"
   $content | Set-Content $vcsTemplatePath -Encoding UTF8
+  Format-JsonWithPrettier -FilePath $vcsTemplatePath
   Write-Host "Template saved: $vcsTemplatePath" -ForegroundColor Yellow
 
   # Create symlink in mirrored VCS directory pointing to template
@@ -119,6 +134,7 @@ function ConvertFrom-StreamDeckTemplate {
   $content = $content -replace "{{STREAMING_REPO_PATH}}", $windowsPath
 
   $content | Set-Content $OutputFile -Encoding UTF8
+  Format-JsonWithPrettier -FilePath $OutputFile
   Write-Host "Real config saved: $OutputFile" -ForegroundColor Yellow
 }
 

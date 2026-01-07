@@ -6,7 +6,7 @@ version = "0.0.0"
 dev = ["ruff"]
 
 [tool.basedpyright]
-# reportUnusedImport = false
+reportUnusedImport = false                # taken care of by ruff
 reportImplicitStringConcatenation = false # Prefer ruff's implicit enforcement
 reportUnusedCallResult = false            # Can't see the use ...
 # reportUndefinedVariable = false

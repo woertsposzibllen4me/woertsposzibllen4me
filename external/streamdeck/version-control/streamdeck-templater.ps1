@@ -33,7 +33,7 @@ function ConvertTo-StreamDeckTemplate {
     throw "This function must target files in: $expectedPath`nCurrent target: $inputDirectory"
   }
   if ($InputFile -notmatch '\.json$') {
-    throw "Input file must be a .json file, got: $InputFile"
+    throw "Input file must be a .json file, got: $inputFileName"
   }
 
   $templateFileName = $inputFileName -replace "\.json$", ".vcs-template.json"
@@ -95,6 +95,7 @@ function ConvertFrom-StreamDeckTemplate {
     [string]$InputFile
   )
   $InputFile = (Resolve-Path $InputFile).Path
+  $inputFileName = Split-Path $InputFile -Leaf
   $inputDirectory = Split-Path $InputFile -Parent
   $expectedPath = $script:StreamDeckBasePath
 
@@ -102,7 +103,7 @@ function ConvertFrom-StreamDeckTemplate {
     throw "This function must target files in: $expectedPath`nCurrent target: $inputDirectory"
   }
   if ($InputFile -notmatch '\.vcs-template\.json$') {
-    throw "Input file must be a .vcs-template.json file, got: $InputFile"
+    throw "Input file must be a .vcs-template.json file, got: $inputFileName"
   }
 
   $OutputFile = $InputFile -replace "\.template\.", "."

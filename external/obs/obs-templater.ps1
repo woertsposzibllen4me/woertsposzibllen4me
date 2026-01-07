@@ -28,6 +28,12 @@ function ConvertTo-ObsTemplate {
     [string]$VcRelativePath = $script:DefaultVcPath
   )
 
+  # Validate environment setup
+  if (-not $script:RepoPath) {
+    throw "STREAMING_REPO_PATH environment variable is not set. Please set it
+    before running this function."
+  }
+
   # Convert input to absolute path
   $InputFile = (Resolve-Path $InputFile).Path
   $inputFileName = Split-Path $InputFile -Leaf
@@ -36,48 +42,36 @@ function ConvertTo-ObsTemplate {
   Write-Host "Creating template from real config..." -ForegroundColor Green
   Write-Host "Input:  $InputFile" -ForegroundColor Gray
 
-  # Determine final VC location
-  if ($script:RepoPath) {
-    $vcFullPath = Join-Path ($script:RepoPath -replace '/', '\') $VcRelativePath
-    $vcTemplatePath = Join-Path $vcFullPath $templateFileName
+  # Setup paths
+  $vcFullPath = Join-Path ($script:RepoPath -replace '/', '\') $VcRelativePath
+  $vcTemplatePath = Join-Path $vcFullPath $templateFileName
 
-    # Ensure the VC directory exists
-    if (-not (Test-Path $vcFullPath)) {
-      New-Item -ItemType Directory -Path $vcFullPath -Force | Out-Null
-      Write-Host "Created VC directory: $vcFullPath" -ForegroundColor Cyan
-    }
-
-    Write-Host "Output: $vcTemplatePath" -ForegroundColor Gray
-
-  } else {
-    $vcTemplatePath = Join-Path $script:CurrentPath $templateFileName
-    Write-Host "Warning: STREAMING_REPO_PATH not set, saving template locally" -ForegroundColor Yellow
+  # Ensure the VC directory exists
+  if (-not (Test-Path $vcFullPath)) {
+    New-Item -ItemType Directory -Path $vcFullPath -Force | Out-Null
+    Write-Host "Created VC directory: $vcFullPath" -ForegroundColor Cyan
   }
+
+  Write-Host "Output: $vcTemplatePath" -ForegroundColor Gray
 
   # CREATE BACKUP FIRST
-  if ($script:RepoPath) {
-    $backupFileName = $inputFileName -replace "\.json$", ".backup.json"
-    $backupPath = Join-Path (Split-Path $vcTemplatePath -Parent) $backupFileName
-    Copy-Item $InputFile $backupPath -Force
-    Write-Host "Backup saved: $backupPath" -ForegroundColor Magenta
-  } else {
-    $backupPath = Join-Path $script:CurrentPath ($inputFileName -replace "\.json$", ".backup.json")
-    Copy-Item $InputFile $backupPath -Force
-    Write-Host "Backup saved locally, due to STREAMING_REPO_PATH not set: $backupPath" -ForegroundColor Magenta
-  }
+  $backupFileName = $inputFileName -replace "\.json$", ".backup.json"
+  $backupPath = Join-Path $vcFullPath $backupFileName
 
-  $symlinkPath = Join-Path $script:CurrentPath $templateFileName
+  Copy-Item $InputFile $backupPath -Force
+  Write-Host "Backup saved: $backupPath" -ForegroundColor Magenta
 
   # Remove existing symlink before reading/writing anything
+  $symlinkPath = Join-Path $script:CurrentPath $templateFileName
   if (Test-Path $symlinkPath) {
     Remove-Item $symlinkPath -Force
     Write-Host "Removed existing symlink" -ForegroundColor Gray
   }
 
+  # Read and process content
   $content = Get-Content $InputFile -Raw
-  if ($script:RepoPath) {
-    $content = $content -replace [regex]::Escape($script:RepoPath), "{{STREAMING_REPO_PATH}}"
-  }
+
+  $content = $content -replace [regex]::Escape($script:RepoPath), "{{STREAMING_REPO_PATH}}"
 
   if ($script:DataPath) {
     $content = $content -replace [regex]::Escape($script:DataPath), "{{STREAMING_DATA_PATH}}"
@@ -87,12 +81,8 @@ function ConvertTo-ObsTemplate {
   Write-Host "Template saved: $vcTemplatePath" -ForegroundColor Yellow
 
   # Create symlink in OBS scenes folder pointing to VC location
-  if ($script:RepoPath) {
-    New-Item -ItemType SymbolicLink -Path $symlinkPath -Target $vcTemplatePath | Out-Null
-    Write-Host "Created symlink: $symlinkPath -> $vcTemplatePath" -ForegroundColor Green
-  } else {
-    Write-Host "Warning: STREAMING_REPO_PATH not set, symlink not created" -ForegroundColor Yellow
-  }
+  New-Item -ItemType SymbolicLink -Path $symlinkPath -Target $vcTemplatePath | Out-Null
+  Write-Host "Created symlink: $symlinkPath -> $vcTemplatePath" -ForegroundColor Green
 }
 
 function ConvertFrom-ObsTemplate {
@@ -100,6 +90,12 @@ function ConvertFrom-ObsTemplate {
     [Parameter(Mandatory=$true)]
     [string]$InputFile
   )
+
+  # Validate environment setup
+  if (-not $script:RepoPath) {
+    throw "STREAMING_REPO_PATH environment variable is not set. Please set it
+    before running this function."
+  }
 
   $OutputFile = $InputFile -replace "\.vc-template\.", "."
 
@@ -109,19 +105,14 @@ function ConvertFrom-ObsTemplate {
 
   $content = Get-Content $InputFile -Raw
 
-  # Validate required variables
+  # Validate DataPath if template uses it
   if ($content -match "{{STREAMING_DATA_PATH}}" -and -not $script:DataPath) {
-    throw "Template contains {{STREAMING_DATA_PATH}} but STREAMING_DATA_PATH environment variable is not set"
-  }
-
-  if ($content -match "{{STREAMING_REPO_PATH}}" -and -not $script:RepoPath) {
-    throw "Template contains {{STREAMING_REPO_PATH}} but STREAMING_REPO_PATH environment variable is not set"
+    throw "Template contains {{STREAMING_DATA_PATH}} but STREAMING_DATA_PATH
+    environment variable is not set"
   }
 
   # Replace placeholders
-  if ($script:RepoPath) {
-    $content = $content -replace "{{STREAMING_REPO_PATH}}", $script:RepoPath
-  }
+  $content = $content -replace "{{STREAMING_REPO_PATH}}", $script:RepoPath
 
   if ($script:DataPath) {
     $content = $content -replace "{{STREAMING_DATA_PATH}}", $script:DataPath

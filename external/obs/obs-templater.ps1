@@ -1,4 +1,4 @@
-# Used to create an editable template from a OBS scenes file
+# Used to create an editable template from an OBS "scenes.json" file
 
 $script:DataPath = $env:STREAMING_DATA_PATH
 $script:RepoPath = $env:STREAMING_REPO_PATH
@@ -17,7 +17,7 @@ $script:RepoPath = if ($script:RepoPath) {
 }
 
 $script:CurrentPath = Get-Location
-$script:DefaultVcPath = "external/obs/version-control"  # Default VC path in repo
+$script:DefaultVcPath = "external/obs/version-control"
 
 function ConvertTo-ObsTemplate {
   param(
@@ -25,7 +25,7 @@ function ConvertTo-ObsTemplate {
     [string]$InputFile,
 
     [Parameter(Mandatory=$false)]
-    [string]$VcRelativePath = $script:DefaultVcPath  # Use default if not specified
+    [string]$VcRelativePath = $script:DefaultVcPath
   )
 
   # Convert input to absolute path

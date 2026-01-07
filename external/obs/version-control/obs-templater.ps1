@@ -2,6 +2,8 @@
 
 $script:DataPath = $env:STREAMING_DATA_PATH
 $script:RepoPath = $env:STREAMING_REPO_PATH
+$script:PrettierPath = Join-Path $env:LOCALAPPDATA "nvim-data\mason\bin\prettier.cmd"
+
 
 # Validate environment setup
 if (-not $script:RepoPath) {
@@ -29,6 +31,19 @@ $script:RepoPath = if ($script:RepoPath) {
 
 $script:DefaultVcsPath = "external/obs/version-control/scenes"
 $script:ObsBasePath = Join-Path $env:APPDATA "obs-studio\basic\scenes"
+
+function Format-JsonWithPrettier {
+  param([string]$FilePath)
+
+  if (-not (Test-Path $script:PrettierPath)) {
+    Write-Host "Warning: Prettier not found at $script:PrettierPath.
+    Skipping formatting." -ForegroundColor Yellow
+    return
+  }
+
+  Write-Host "Formatting with Prettier..." -ForegroundColor Cyan
+  & $script:PrettierPath --write $FilePath
+}
 
 function ConvertTo-ObsTemplate {
   param(
@@ -86,6 +101,7 @@ function ConvertTo-ObsTemplate {
   $content = $content -replace [regex]::Escape($script:RepoPath), "{{STREAMING_REPO_PATH}}"
   $content = $content -replace [regex]::Escape($script:DataPath), "{{STREAMING_DATA_PATH}}"
   $content | Set-Content $vcsTemplatePath -Encoding UTF8
+  Format-JsonWithPrettier -FilePath $vcsTemplatePath
   Write-Host "Template saved: $vcsTemplatePath" -ForegroundColor Yellow
 
   # Create symlink in OBS scenes folder pointing to VCS location
@@ -124,6 +140,7 @@ function ConvertFrom-ObsTemplate {
   $content = $content -replace "{{STREAMING_DATA_PATH}}", $script:DataPath
 
   $content | Set-Content $OutputFile -Encoding UTF8
+  Format-JsonWithPrettier -FilePath $OutputFile
   Write-Host "Real config saved: $OutputFile" -ForegroundColor Yellow
 }
 

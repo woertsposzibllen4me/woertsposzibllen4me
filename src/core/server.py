@@ -114,10 +114,12 @@ async def manage_database(conn: aiosqlite.Connection, message: str):
 
 
 def create_websocket_handler(conn: aiosqlite.Connection):
-    async def websocket_handler(websocket: WebSocketServerProtocol, path: str):
+    async def websocket_handler(websocket: WebSocketServerProtocol):
         async for message in websocket:
             if isinstance(message, bytes):
                 message = message.decode("utf-8")
+
+            path = websocket.request.path
             print(f"Received: '{message}' on path: {path}")
 
             if path == "/subprocess":  # Path to control subprocesses

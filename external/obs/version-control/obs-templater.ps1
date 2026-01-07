@@ -27,7 +27,7 @@ $script:RepoPath = if ($script:RepoPath) {
   $null
 }
 
-$script:DefaultVcPath = "external/obs/version-control"
+$script:DefaultVcsPath = "external/obs/version-control/scenes"
 
 function ConvertTo-ObsTemplate {
   param(
@@ -35,33 +35,33 @@ function ConvertTo-ObsTemplate {
     [string]$InputFile,
 
     [Parameter(Mandatory=$false)]
-    [string]$VcRelativePath = $script:DefaultVcPath
+    [string]$VcsRelativePath = $script:DefaultVcsPath
   )
 
   # Convert input to absolute path
   $InputFile = (Resolve-Path $InputFile).Path
   $inputFileName = Split-Path $InputFile -Leaf
   $inputDirectory = Split-Path $InputFile -Parent
-  $templateFileName = $inputFileName -replace "\.json$", ".vc-template.json"
+  $templateFileName = $inputFileName -replace "\.json$", ".vcs-template.json"
 
   Write-Host "Creating template from real config..." -ForegroundColor Green
   Write-Host "Input:  $InputFile" -ForegroundColor Gray
 
   # Setup paths
-  $vcFullPath = Join-Path ($script:RepoPath -replace '/', '\') $VcRelativePath
-  $vcTemplatePath = Join-Path $vcFullPath $templateFileName
+  $vcsFullPath = Join-Path ($script:RepoPath -replace '/', '\') $VcsRelativePath
+  $vcsTemplatePath = Join-Path $vcsFullPath $templateFileName
 
-  Write-Host "Output: $vcTemplatePath" -ForegroundColor Gray
+  Write-Host "Output: $vcsTemplatePath" -ForegroundColor Gray
 
-  # Ensure the VC directory exists
-  if (-not (Test-Path $vcFullPath)) {
-    New-Item -ItemType Directory -Path $vcFullPath -Force | Out-Null
-    Write-Host "Created VC directory: $vcFullPath" -ForegroundColor Cyan
+  # Ensure the VCS directory exists
+  if (-not (Test-Path $vcsFullPath)) {
+    New-Item -ItemType Directory -Path $vcsFullPath -Force | Out-Null
+    Write-Host "Created VCS directory: $vcsFullPath" -ForegroundColor Cyan
   }
 
   # CREATE BACKUP FIRST
   $backupFileName = $inputFileName -replace "\.json$", ".backup.json"
-  $backupPath = Join-Path $vcFullPath $backupFileName
+  $backupPath = Join-Path $vcsFullPath $backupFileName
   Copy-Item $InputFile $backupPath -Force
   Write-Host "Backup saved: $backupPath" -ForegroundColor Magenta
 
@@ -78,12 +78,12 @@ function ConvertTo-ObsTemplate {
   # Replace actual paths with placeholders
   $content = $content -replace [regex]::Escape($script:RepoPath), "{{STREAMING_REPO_PATH}}"
   $content = $content -replace [regex]::Escape($script:DataPath), "{{STREAMING_DATA_PATH}}"
-  $content | Set-Content $vcTemplatePath -Encoding UTF8
-  Write-Host "Template saved: $vcTemplatePath" -ForegroundColor Yellow
+  $content | Set-Content $vcsTemplatePath -Encoding UTF8
+  Write-Host "Template saved: $vcsTemplatePath" -ForegroundColor Yellow
 
-  # Create symlink in OBS scenes folder pointing to VC location
-  New-Item -ItemType SymbolicLink -Path $symlinkPath -Target $vcTemplatePath | Out-Null
-  Write-Host "Created symlink: $symlinkPath -> $vcTemplatePath" -ForegroundColor Green
+  # Create symlink in OBS scenes folder pointing to VCS location
+  New-Item -ItemType SymbolicLink -Path $symlinkPath -Target $vcsTemplatePath | Out-Null
+  Write-Host "Created symlink: $symlinkPath -> $vcsTemplatePath" -ForegroundColor Green
 }
 
 function ConvertFrom-ObsTemplate {
@@ -92,7 +92,7 @@ function ConvertFrom-ObsTemplate {
     [string]$InputFile
   )
 
-  $OutputFile = $InputFile -replace "\.vc-template\.", "."
+  $OutputFile = $InputFile -replace "\.vcs-template\.", "."
 
   Write-Host "Creating real config from template..." -ForegroundColor Green
   Write-Host "Input:  $InputFile" -ForegroundColor Gray
@@ -113,10 +113,10 @@ Write-Host "Current paths:" -ForegroundColor Cyan
 Write-Host "  Data Path: $($script:DataPath ?? 'Not set')" -ForegroundColor Gray
 Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')" -ForegroundColor Gray
 Write-Host "  The script should be used in $env:APPDATA\obs-studio\basic\scenes" -ForegroundColor Gray
-Write-Host "  Default VC Path: $script:DefaultVcPath" -ForegroundColor Gray
+Write-Host "  Default VCS Path: $script:DefaultVcsPath" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Usage:" -ForegroundColor Cyan
-Write-Host "  ConvertTo-ObsTemplate 'Dota.json'                # Uses default VC path, creates symlink" -ForegroundColor Gray
-Write-Host "  ConvertTo-ObsTemplate 'Dota.json' 'custom/path'  # Uses custom VC path" -ForegroundColor Gray
-Write-Host "  ConvertFrom-ObsTemplate 'Dota.vc-template.json'" -ForegroundColor Gray
+Write-Host "  ConvertTo-ObsTemplate 'Dota.json'                # Uses default VCS path, creates symlink" -ForegroundColor Gray
+Write-Host "  ConvertTo-ObsTemplate 'Dota.json' 'custom/path'  # Uses custom VCS path" -ForegroundColor Gray
+Write-Host "  ConvertFrom-ObsTemplate 'Dota.vcs-template.json'" -ForegroundColor Gray
 

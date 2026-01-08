@@ -19,6 +19,7 @@ logger = setup_logger(SCRIPT_NAME, "DEBUG")
 
 
 async def create_connection(db_file: str) -> aiosqlite.Connection | None:
+    """Create a database connection to the SQLite database."""
     db_conn = None
     try:
         db_conn = await aiosqlite.connect(db_file)
@@ -41,12 +42,12 @@ async def create_connection(db_file: str) -> aiosqlite.Connection | None:
             if count and count[0] == 0:
                 await initialize_denied_slots(db_conn)
 
-        return db_conn
-
-    except aiosqlite.Error as e:
-        logger.error(f"Error creating database connection: {e}")
+    except aiosqlite.Error:
+        logger.exception("Error creating database connection")
         if db_conn:
             await db_conn.close()
+
+        return db_conn
 
 
 async def create_slots_table(conn: aiosqlite.Connection):

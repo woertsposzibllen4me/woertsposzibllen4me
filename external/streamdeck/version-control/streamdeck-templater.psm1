@@ -52,7 +52,7 @@ function ConvertTo-StreamDeckTemplate {
 
   $templateFileName = $inputFileName -replace "\.json$", ".vcs-template.json"
   Write-Host "Creating StreamDeck template from real config..." -ForegroundColor Green
-  Write-Host "Input:  $InputFile" -ForegroundColor Gray
+  Write-Host "Input:  $InputFile"
 
   # Calculate relative path from StreamDeck base to input file
   $relativePath = $inputDirectory -replace [regex]::Escape($script:StreamDeckBasePath), ""
@@ -63,7 +63,7 @@ function ConvertTo-StreamDeckTemplate {
   $vcsMirroredPath = Join-Path $vcsFullPath $relativePath
   $vcsTemplatePath = Join-Path $vcsMirroredPath $templateFileName
 
-  Write-Host "Output: $vcsTemplatePath" -ForegroundColor Gray
+  Write-Host "Output: $vcsTemplatePath"
 
   $forwardSlashPath = $script:RepoPath
   $backslashPath = $script:RepoPath -replace '/', '\\'
@@ -86,7 +86,7 @@ function ConvertTo-StreamDeckTemplate {
   $symlinkPath = Join-Path $inputDirectory $templateFileName
   if (Test-Path $symlinkPath) {
     Remove-Item $symlinkPath -Force
-    Write-Host "Removed existing symlink" -ForegroundColor Gray
+    Write-Host "Removed existing symlink"
   }
 
   # Read and process content
@@ -124,8 +124,8 @@ function ConvertFrom-StreamDeckTemplate {
   $OutputFile = $InputFile -replace "\.vcs-template\.json$", ".json"
 
   Write-Host "Creating real StreamDeck config from template..." -ForegroundColor Green
-  Write-Host "Input:  $InputFile" -ForegroundColor Gray
-  Write-Host "Output: $OutputFile" -ForegroundColor Gray
+  Write-Host "Input:  $InputFile"
+  Write-Host "Output: $OutputFile"
 
   $content = Get-Content $InputFile -Raw
 
@@ -139,11 +139,11 @@ function ConvertFrom-StreamDeckTemplate {
 }
 
 Write-Host "StreamDeck Templater functions loaded!" -ForegroundColor Green
-Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')" -ForegroundColor Gray
-Write-Host "  Input files must be under: $script:StreamDeckBasePath" -ForegroundColor Gray
+Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')"
+Write-Host "  Input files must be under: $script:StreamDeckBasePath"
 Write-Host "Usage:" -ForegroundColor Cyan
-Write-Host "  ConvertTo-StreamDeckTemplate 'manifest.json'                # Creates vcs-template.json" -ForegroundColor Gray
-Write-Host "  ConvertTo-ObsTemplate 'manifest.json' 'custom/path'         # Uses custom VCS relative path in repo" -ForegroundColor Gray
-Write-Host "  ConvertFrom-StreamDeckTemplate 'manifest.vcs-template.json' # Creates manifest.json" -ForegroundColor Gray
+Write-Host "  ConvertTo-StreamDeckTemplate 'manifest.json'                # Creates vcs-template.json"
+Write-Host "  ConvertTo-ObsTemplate 'manifest.json' 'custom/path'         # Uses custom VCS relative path in repo"
+Write-Host "  ConvertFrom-StreamDeckTemplate 'manifest.vcs-template.json' # Creates manifest.json"
 Export-ModuleMember -Function ConvertTo-StreamDeckTemplate, ConvertFrom-StreamDeckTemplate
 

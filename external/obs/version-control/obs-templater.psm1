@@ -67,13 +67,13 @@ function ConvertTo-ObsTemplate {
 
   $templateFileName = $inputFileName -replace "\.json$", ".vcs-template.json"
   Write-Host "Creating template from real config..." -ForegroundColor Green
-  Write-Host "Input:  $InputFile" -ForegroundColor Gray
+  Write-Host "Input:  $InputFile"
 
   # Setup paths
   $vcsFullPath = Join-Path ($script:RepoPath -replace '/', '\') $VcsRelativePath
   $vcsTemplatePath = Join-Path $vcsFullPath $templateFileName
 
-  Write-Host "Output: $vcsTemplatePath" -ForegroundColor Gray
+  Write-Host "Output: $vcsTemplatePath"
 
   # Ensure the VCS directory exists
   if (-not (Test-Path $vcsFullPath)) {
@@ -91,7 +91,7 @@ function ConvertTo-ObsTemplate {
   $symlinkPath = Join-Path $inputDirectory $templateFileName
   if (Test-Path $symlinkPath) {
     Remove-Item $symlinkPath -Force
-    Write-Host "Removed existing template/symlink" -ForegroundColor Gray
+    Write-Host "Removed existing template/symlink"
   }
 
   # Read and process content
@@ -130,8 +130,8 @@ function ConvertFrom-ObsTemplate {
   $OutputFile = $InputFile -replace "\.vcs-template\.json$", ".json"
 
   Write-Host "Creating real config from template..." -ForegroundColor Green
-  Write-Host "Input:  $InputFile" -ForegroundColor Gray
-  Write-Host "Output: $OutputFile" -ForegroundColor Gray
+  Write-Host "Input:  $InputFile"
+  Write-Host "Output: $OutputFile"
 
   $content = Get-Content $InputFile -Raw
 
@@ -145,13 +145,13 @@ function ConvertFrom-ObsTemplate {
 }
 
 Write-Host "OBS Templater functions loaded!" -ForegroundColor Green
-Write-Host "  Data Path: $($script:DataPath ?? 'Not set')" -ForegroundColor Gray
-Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')" -ForegroundColor Gray
-Write-Host "  Input files must be under: $script:ObsBasePath" -ForegroundColor Gray
-Write-Host "  Default VCS Path: $script:DefaultVcsPath" -ForegroundColor Gray
+Write-Host "  Data Path: $($script:DataPath ?? 'Not set')"
+Write-Host "  Repo Path: $($script:RepoPath ?? 'Not set')"
+Write-Host "  Input files must be under: $script:ObsBasePath"
+Write-Host "  Default VCS Path: $script:DefaultVcsPath"
 Write-Host "Usage:" -ForegroundColor Cyan
-Write-Host "  ConvertTo-ObsTemplate 'scenes.json'                # Creates vcs-template.json" -ForegroundColor Gray
-Write-Host "  ConvertTo-ObsTemplate 'scenes.json' 'custom/path'  # Uses custom VCS relative path in repo" -ForegroundColor Gray
-Write-Host "  ConvertFrom-ObsTemplate 'scenes.vcs-template.json' # Creates scenes.json" -ForegroundColor Gray
+Write-Host "  ConvertTo-ObsTemplate 'scenes.json'                # Creates vcs-template.json"
+Write-Host "  ConvertTo-ObsTemplate 'scenes.json' 'custom/path'  # Uses custom VCS relative path in repo"
+Write-Host "  ConvertFrom-ObsTemplate 'scenes.vcs-template.json' # Creates scenes.json"
 Export-ModuleMember -Function ConvertTo-ObsTemplate, ConvertFrom-ObsTemplate
 

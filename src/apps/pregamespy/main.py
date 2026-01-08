@@ -1,5 +1,6 @@
 import asyncio
 
+import aiosqlite
 import cv2 as cv
 
 from src.apps.pregamespy.core.constants import (
@@ -34,10 +35,12 @@ twm = TerminalWindowManager()
 
 
 async def setup_optional_new_capture_area(
-    new_capture: bool, image_processor: ImageProcessor
-):
+    image_processor: ImageProcessor,
+    *,
+    enable: bool,
+) -> None:
     """Only used for development purposes."""
-    if new_capture:
+    if enable:
         capture_area = NEW_CAPTURE_AREA
         filename = "src/apps/pregamespy/data/opencv/new_capture.jpg"
         await image_processor.capture_new_area(capture_area, filename)
@@ -48,6 +51,7 @@ async def run_main_task(
     slot: int,
     detector: PreGamePhaseDetector,
 ) -> None:
+    """Run the main detection task."""
     mute_ssim_prints.set()
     main_task = asyncio.create_task(detector.detect_pregame_phase())
 
@@ -57,7 +61,8 @@ async def run_main_task(
     await main_task
 
 
-async def main():
+async def main() -> None:
+    """Let's get this party started."""
     ws_client = None
     socket_server_task = None
     slots_db_conn = None
@@ -78,12 +83,15 @@ async def main():
         await ws_client.establish_connection()
 
         detector = PreGamePhaseDetector(socket_server_handler, ws_client)
-        await setup_optional_new_capture_area(False, detector.image_processor)
+        await setup_optional_new_capture_area(
+            detector.image_processor,
+            enable=False,
+        )
         await run_main_task(slots_db_conn, slot, detector)
 
     except Exception as e:
         print(f"Unexpected error of type: {type(e).__name__}: {e}")
-        logger.exception(f"Unexpected error: {e}")
+        logger.exception("Unexpected error")
         raise
 
     finally:

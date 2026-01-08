@@ -60,17 +60,23 @@ async def manage_subprocess(message: str):
         # able to manipulate the position of the script's terminal with the
         # terminal window manager module.
 
+        venv_python = PROJECT_DIR_PATH / ".venv" / "Scripts" / "python.exe"
+        script_path = APPS_DIR_PATH / target / f"{target}_main.py"
+
         command = (
-            f'start /min cmd /c "cd /d {PROJECT_DIR_PATH}'
-            f"&& set PYTHONPATH={PROJECT_DIR_PATH}"
-            f"&& .\\venv\\Scripts\\activate"
-            f"&& cd {APPS_DIR_PATH}"
-            f"&& cd {target}"
-            f"&& py {target}_main.py"
+            f'start /min cmd /k "'
+            f"cd /d {PROJECT_DIR_PATH} && "
+            f"set PYTHONPATH={PROJECT_DIR_PATH} && "
+            f'{venv_python} {script_path}"'
         )
 
-        print(f"Attempting to start {target}")
-        subprocess.Popen(command, shell=True)
+        await asyncio.create_subprocess_shell(
+            command,
+            cwd=str(PROJECT_DIR_PATH),
+        )
+
+        print(f"Started {target}")
+        logger.info(f"Started subprocess {target}")
 
     elif instructions == "stop":
         await send_message_to_subprocess_socket(

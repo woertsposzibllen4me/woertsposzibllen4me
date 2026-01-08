@@ -3,7 +3,7 @@ import os
 from src.config.settings import PROJECT_DIR_PATH
 
 # General project paths
-APPS_DIR_PATH = os.path.join(PROJECT_DIR_PATH, "src/apps")
+APPS_DIR_PATH = PROJECT_DIR_PATH / "src" / "apps"
 
 # Temp project paths
 TEMP_DIR_PATH = os.path.join(PROJECT_DIR_PATH, "temp")

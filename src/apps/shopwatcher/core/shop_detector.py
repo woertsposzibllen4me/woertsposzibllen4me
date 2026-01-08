@@ -25,6 +25,7 @@ from src.apps.shopwatcher.core.socket_handler import ShopWatcherHandler
 from src.connection.websocket_client import WebSocketClient
 
 
+# pylint: disable=too-few-public-methods
 @final
 class ShopDetector:
     """Detects the shop appearing on the screen and manages shop tracking logic."""
@@ -50,18 +51,6 @@ class ShopDetector:
         self.socket_handler = socket_handler
         self.logger = logger
         self.shop_tracker = ShopTracker(logger, ws_client)
-
-    @staticmethod
-    async def _capture_window(area: dict[str, int]) -> np.ndarray:
-        with mss.mss() as sct:
-            img = sct.grab(area)
-        return np.array(img)
-
-    @staticmethod
-    async def _compare_images(
-        image_a: cv.typing.MatLike, image_b: cv.typing.MatLike
-    ) -> float:
-        return cast("float", ssim(image_a, image_b))
 
     async def scan_for_shop_and_notify(self, *, write: bool) -> None:
         """Scan for the shop on the screen and react when it appears/disappears.
@@ -96,3 +85,15 @@ class ShopDetector:
             elif match_value < self.SSIM_SIMILARITY_THRESHOLD:
                 await self.shop_tracker.react_to_closed_shop()
             await asyncio.sleep(0.01)
+
+    @staticmethod
+    async def _capture_window(area: dict[str, int]) -> np.ndarray:
+        with mss.mss() as sct:
+            img = sct.grab(area)
+        return np.array(img)
+
+    @staticmethod
+    async def _compare_images(
+        image_a: cv.typing.MatLike, image_b: cv.typing.MatLike
+    ) -> float:
+        return cast("float", ssim(image_a, image_b))

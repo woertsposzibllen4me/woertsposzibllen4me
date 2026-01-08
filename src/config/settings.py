@@ -25,7 +25,7 @@ def find_project_root() -> Path:
     raise FileNotFoundError(msg)
 
 
-PROJECT_DIR_PATH = find_project_root()
+PROJECT_ROOT_PATH = find_project_root()
 
 PYTHONPATH = get_env_var("PYTHONPATH")
 

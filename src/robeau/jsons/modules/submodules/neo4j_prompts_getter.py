@@ -5,7 +5,7 @@ from typing import Any
 
 from neo4j import Driver, GraphDatabase, Record, Result, Session
 
-from src.config.settings import NEO4J_PASSWORD, NEO4J_URI, NEO4J_USER, PROJECT_DIR_PATH
+from src.config.settings import NEO4J_PASSWORD, NEO4J_URI, NEO4J_USER, PROJECT_ROOT_PATH
 from src.robeau.core.robeau_constants import USER_LABELS
 
 
@@ -82,7 +82,7 @@ def main():
     data = get_data_from_labels(labels)
     print("Data to be written to JSON:", data)
     json_filepath = os.path.join(
-        PROJECT_DIR_PATH, "src/robeau/jsons/neo4j/neo4j_prompts.json"
+        PROJECT_ROOT_PATH, "src/robeau/jsons/neo4j/neo4j_prompts.json"
     )
 
     if os.path.exists(json_filepath):

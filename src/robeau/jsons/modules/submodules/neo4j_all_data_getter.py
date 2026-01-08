@@ -5,7 +5,7 @@ from typing import Any
 
 from neo4j import GraphDatabase
 
-from src.config.settings import NEO4J_PASSWORD, NEO4J_URI, NEO4J_USER, PROJECT_DIR_PATH
+from src.config.settings import NEO4J_PASSWORD, NEO4J_URI, NEO4J_USER, PROJECT_ROOT_PATH
 
 
 class Neo4jToJson:
@@ -173,22 +173,22 @@ def create_file_paths_class():
 
     return FilePaths(
         json=os.path.join(
-            PROJECT_DIR_PATH, "src/robeau/jsons/neo4j/neo4j_all_data.json"
+            PROJECT_ROOT_PATH, "src/robeau/jsons/neo4j/neo4j_all_data.json"
         ),
         additions=os.path.join(
-            PROJECT_DIR_PATH,
+            PROJECT_ROOT_PATH,
             "src/robeau/jsons/temp/outputs_from_get_data/last_additions.json",
         ),
         deletions=os.path.join(
-            PROJECT_DIR_PATH,
+            PROJECT_ROOT_PATH,
             "src/robeau/jsons/temp/outputs_from_get_data/last_deletions.json",
         ),
         log=os.path.join(
-            PROJECT_DIR_PATH,
+            PROJECT_ROOT_PATH,
             "src/robeau/jsons/temp/outputs_from_get_data/neo4j_changes_log.txt",
         ),
         backup=os.path.join(
-            PROJECT_DIR_PATH,
+            PROJECT_ROOT_PATH,
             "src/robeau/jsons/temp/outputs_from_get_data/OLD_neo4j_all_data.json",
         ),
     )

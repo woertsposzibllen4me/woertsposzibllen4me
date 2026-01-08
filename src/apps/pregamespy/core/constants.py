@@ -2,7 +2,7 @@ import os
 
 import cv2 as cv
 
-from src.config.settings import PROJECT_DIR_PATH
+from src.config.settings import PROJECT_ROOT_PATH
 from src.core.termwm import SecondaryWindow
 
 # Opencv windows parameters, for resizing and moving using termwm
@@ -30,7 +30,7 @@ NEW_CAPTURE_AREA = {"left": 0, "top": 0, "width": 0, "height": 0}
 # Path to open CV templates
 DOTA_TAB_TEMPLATE = cv.imread(
     os.path.join(
-        PROJECT_DIR_PATH,
+        PROJECT_ROOT_PATH,
         "data/apps/pregamespy/opencv/dota_menu_power_icon.jpg",
     ),
     cv.IMREAD_GRAYSCALE,
@@ -38,7 +38,7 @@ DOTA_TAB_TEMPLATE = cv.imread(
 
 IN_GAME_TEMPLATE = cv.imread(
     os.path.join(
-        PROJECT_DIR_PATH,
+        PROJECT_ROOT_PATH,
         "data/apps/pregamespy/opencv/dota_courier_deliver_items_icon.jpg",
     ),
     cv.IMREAD_GRAYSCALE,
@@ -46,7 +46,7 @@ IN_GAME_TEMPLATE = cv.imread(
 
 STARTING_BUY_TEMPLATE = cv.imread(
     os.path.join(
-        PROJECT_DIR_PATH,
+        PROJECT_ROOT_PATH,
         "data/apps/pregamespy/opencv/dota_strategy-load-out-world-guides.jpg",
     ),
     cv.IMREAD_GRAYSCALE,
@@ -54,7 +54,7 @@ STARTING_BUY_TEMPLATE = cv.imread(
 
 PLAY_DOTA_BUTTON_TEMPLATE = cv.imread(
     os.path.join(
-        PROJECT_DIR_PATH,
+        PROJECT_ROOT_PATH,
         "data/apps/pregamespy/opencv/dota_play_dota_button.jpg",
     ),
     cv.IMREAD_GRAYSCALE,
@@ -62,7 +62,7 @@ PLAY_DOTA_BUTTON_TEMPLATE = cv.imread(
 
 DESKTOP_TAB_TEMPLATE = cv.imread(
     os.path.join(
-        PROJECT_DIR_PATH,
+        PROJECT_ROOT_PATH,
         "data/apps/pregamespy/opencv/windows_desktop_icons.jpg",
     ),
     cv.IMREAD_GRAYSCALE,
@@ -70,7 +70,7 @@ DESKTOP_TAB_TEMPLATE = cv.imread(
 
 SETTINGS_TEMPLATE = cv.imread(
     os.path.join(
-        PROJECT_DIR_PATH,
+        PROJECT_ROOT_PATH,
         "data/apps/pregamespy/opencv/dota_settings_icon.jpg",
     ),
     cv.IMREAD_GRAYSCALE,
@@ -78,7 +78,7 @@ SETTINGS_TEMPLATE = cv.imread(
 
 HERO_PICK_TEMPLATE = cv.imread(
     os.path.join(
-        PROJECT_DIR_PATH,
+        PROJECT_ROOT_PATH,
         "data/apps/pregamespy/opencv/dota_hero_select_chat_icons.jpg",
     ),
     cv.IMREAD_GRAYSCALE,
@@ -87,22 +87,22 @@ HERO_PICK_TEMPLATE = cv.imread(
 
 # Paths to JSON request files for scene changes
 SCENE_CHANGE_IN_GAME = os.path.join(
-    PROJECT_DIR_PATH,
+    PROJECT_ROOT_PATH,
     "data/apps/pregamespy/ws_requests/scene_change_for_in_game.json",
 )
 DSLR_MOVE_FOR_HERO_PICK = os.path.join(
-    PROJECT_DIR_PATH,
+    PROJECT_ROOT_PATH,
     "data/apps/pregamespy/ws_requests/dslr_move_for_hero_pick.json",
 )
 SCENE_CHANGE_FOR_PREGAME = os.path.join(
-    PROJECT_DIR_PATH,
+    PROJECT_ROOT_PATH,
     "data/apps/pregamespy/ws_requests/scene_change_for_pregame.json",
 )
 DSLR_MOVE_STARTING_BUY = os.path.join(
-    PROJECT_DIR_PATH,
+    PROJECT_ROOT_PATH,
     "data/apps/pregamespy/ws_requests/dslr_move_for_starting_buy.json",
 )
 DSLR_HIDE_VS_SCREEN = os.path.join(
-    PROJECT_DIR_PATH,
+    PROJECT_ROOT_PATH,
     "data/apps/pregamespy/ws_requests/dslr_hide_for_vs_screen.json",
 )

@@ -2,7 +2,7 @@ import argparse
 import os
 import subprocess
 
-from src.config.settings import PROJECT_DIR_PATH
+from src.config.settings import PROJECT_ROOT_PATH
 
 
 def launch_main_script(clear_slots: bool = False) -> None:
@@ -19,8 +19,8 @@ def launch_main_script(clear_slots: bool = False) -> None:
     clear_slots_arg = "--clear-slots" if clear_slots else ""
 
     command = (
-        f'start cmd /k "cd /d {PROJECT_DIR_PATH}'
-        f"&& set PYTHONPATH={PROJECT_DIR_PATH}"
+        f'start cmd /k "cd /d {PROJECT_ROOT_PATH}'
+        f"&& set PYTHONPATH={PROJECT_ROOT_PATH}"
         f"&& .\\venv\\Scripts\\activate"
         f"&& cd {example_script_dir}"
         f"&& py {example_script_filename} {clear_slots_arg}"

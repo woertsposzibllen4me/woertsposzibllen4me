@@ -4,7 +4,7 @@ from src.config.settings import PROJECT_DIR_PATH
 from src.core.termwm import SecondaryWindow
 
 # Base paths
-_BASE_DIR = PROJECT_DIR_PATH / "data/apps/shopwatcher"
+_BASE_DIR = PROJECT_DIR_PATH / "data" / "apps" / "shopwatcher"
 _OPENCV_DIR = _BASE_DIR / "opencv"
 _WS_REQUESTS_DIR = _BASE_DIR / "ws_requests"
 _OBS_DIR = _BASE_DIR / "obs"

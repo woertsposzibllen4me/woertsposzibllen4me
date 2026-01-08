@@ -99,6 +99,7 @@ async def occupy_slot_with_data(
     conn: Optional[aiosqlite.Connection],
     slot_id: int,
     data: Optional[list[tuple[str, int, int]]] = None,
+    start_index: int = 0,
 ):
     """Populate a target slot and insert window properties"""
     if conn:
@@ -112,13 +113,15 @@ async def occupy_slot_with_data(
                     return
                 if not row[0]:
                     logger.warning(f"Slot {slot_id} is already occupied.")
-                    return
+                    pass
+                else:
+                    # Only set is_open to False on first write
+                    await cur.execute(
+                        "UPDATE slots SET is_open = False WHERE id = ?", (slot_id,)
+                    )
 
-                await cur.execute(
-                    "UPDATE slots SET is_open = False WHERE id = ?", (slot_id,)
-                )
                 if data is not None:
-                    for i, (name, width, height) in enumerate(data):
+                    for i, (name, width, height) in enumerate(data, start=start_index):
                         await cur.execute(
                             f"UPDATE slots SET name{i}= ?, width{i}=?, "
                             f"height{i}=? WHERE id = ?",
@@ -130,7 +133,9 @@ async def occupy_slot_with_data(
                             ),
                         )
                 await conn.commit()
-                logger.info(f"Slot {slot_id} is now occupied.")
+                logger.debug(
+                    f"Slot {slot_id} data written starting at index {start_index}."
+                )
 
         except aiosqlite.Error as e:
             logger.error(e)
@@ -235,8 +240,7 @@ def free_slot_sync(conn: sqlite3.Connection, slot_id: int):
         cursor.execute("UPDATE slots SET is_open = True WHERE id = ?", (slot_id,))
         for i in range(MAX_AMOUNT_OF_WINDOWS):
             cursor.execute(
-                f"UPDATE slots SET name{i}= ?, width{i}=?, "
-                f"height{i}=? WHERE id = ?",
+                f"UPDATE slots SET name{i}= ?, width{i}=?, height{i}=? WHERE id = ?",
                 (
                     None,
                     None,

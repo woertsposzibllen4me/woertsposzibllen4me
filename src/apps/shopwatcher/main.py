@@ -2,6 +2,7 @@
 
 import asyncio
 
+import aiosqlite
 import cv2 as cv
 
 from src.apps.shopwatcher.core.constants import SECONDARY_WINDOWS
@@ -29,12 +30,14 @@ logger = setup_logger(SCRIPT_NAME, "DEBUG")
 twm = TerminalWindowManager()
 
 
-async def run_main_task(slot: int, shopwatcher: ShopDetector) -> None:
+async def run_main_task(
+    conn: aiosqlite.Connection, slot: int, shopwatcher: ShopDetector
+) -> None:
     """Run the main scanning and notification task."""
     mute_ssim_prints.set()
     main_task = asyncio.create_task(shopwatcher.scan_for_shop_and_notify(write=False))
     await secondary_windows_spawned.wait()
-    await twm.adjust_secondary_windows(slot, SECONDARY_WINDOWS)
+    await twm.adjust_secondary_windows(conn, slot, SECONDARY_WINDOWS)
     mute_ssim_prints.clear()
     await main_task
 
@@ -44,7 +47,7 @@ async def main() -> None:
     socket_server_task = None
     slots_db_conn = None
     try:
-        slots_db_conn, slot = await setup_script(SCRIPT_NAME)
+        slots_db_conn, slot = await setup_script(SCRIPT_NAME, SECONDARY_WINDOWS)
         if slot is None:
             logger.error("No slot available, exiting.")
             return
@@ -61,7 +64,7 @@ async def main() -> None:
 
         shopwatcher = ShopDetector(socket_server_handler, logger, ws_client)
 
-        await run_main_task(slot, shopwatcher)
+        await run_main_task(slots_db_conn, slot, shopwatcher)
 
     except Exception as e:
         print(f"Unexpected error of type: {type(e).__name__}: {e}")

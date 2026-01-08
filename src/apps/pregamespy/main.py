@@ -44,6 +44,7 @@ async def setup_optional_new_capture_area(
 
 
 async def run_main_task(
+    conn: aiosqlite.Connection,
     slot: int,
     detector: PreGamePhaseDetector,
 ) -> None:
@@ -51,7 +52,7 @@ async def run_main_task(
     main_task = asyncio.create_task(detector.detect_pregame_phase())
 
     await secondary_windows_spawned.wait()
-    await twm.adjust_secondary_windows(slot, SECONDARY_WINDOWS)
+    await twm.adjust_secondary_windows(conn, slot, SECONDARY_WINDOWS)
     mute_ssim_prints.clear()
     await main_task
 
@@ -78,7 +79,7 @@ async def main():
 
         detector = PreGamePhaseDetector(socket_server_handler, ws_client)
         await setup_optional_new_capture_area(False, detector.image_processor)
-        await run_main_task(slot, detector)
+        await run_main_task(slots_db_conn, slot, detector)
 
     except Exception as e:
         print(f"Unexpected error of type: {type(e).__name__}: {e}")

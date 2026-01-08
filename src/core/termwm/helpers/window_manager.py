@@ -28,19 +28,28 @@ class WindowManager:
         self.calculator = calculator
         self.logger = logger
 
-    def generate_window_data(
-        self, title: str, secondary_windows: Optional[list[SecondaryWindow]]
+    @staticmethod
+    def _generate_window_data(
+        main_title: str | None,
+        secondary_windows: list[SecondaryWindow] | None = None,
     ) -> list[tuple[str, int, int]]:
-        data = [(title, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT)]
+        data = []
+        if main_title:
+            data = [(main_title, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT)]
         if secondary_windows:
             for window in secondary_windows:
                 sw_tuple = (window.name, window.width, window.height)
                 data.append(sw_tuple)
         return data
 
-    async def manage_secondary_windows(
-        self, slot: int, secondary_windows: list[SecondaryWindow]
+    async def initially_manage_secondary_windows(
+        self,
+        conn: aiosqlite.Connection,
+        slot: int,
+        secondary_windows: list[SecondaryWindow],
     ) -> None:
+        data = self._generate_window_data(None, secondary_windows)
+        await sdh.occupy_slot_with_data(conn, slot, data, start_index=1)
         properties = self.calculator.calculate_secondary_window_properties(
             slot, secondary_windows
         )
@@ -48,17 +57,16 @@ class WindowManager:
             await self.adjuster.adjust_window(window.name, props)
         self.logger.info(f"Secondary windows managed for slot {slot}.")
 
-    async def manage_window(
+    async def initially_manage_window(
         self,
         conn: aiosqlite.Connection,
         window_type: WinType,
         window_name: str,
-        secondary_windows: Optional[list[SecondaryWindow]] = None,
     ) -> tuple[Optional[int], str]:
         """Main method to manage the main window of the script."""
 
         window_name = WINDOW_NAME_SUFFIX + window_name
-        slot, title = await self.assign_slot_and_name_window(
+        slot, title = await self._assign_slot_and_name_window(
             conn, window_type, window_name
         )
 
@@ -66,13 +74,13 @@ class WindowManager:
         await self.adjuster.adjust_window(title, properties)
 
         if window_type == WinType.ACCEPTED and slot is not None:
-            data = self.generate_window_data(title, secondary_windows)
+            data = self._generate_window_data(title)
             await sdh.occupy_slot_with_data(conn, slot, data)
 
         self.logger.info(f"Window <{window_name}> managed successfully.")
         return slot, window_name
 
-    async def assign_slot_and_name_window(
+    async def _assign_slot_and_name_window(
         self, conn: aiosqlite.Connection, window_type: WinType, window_name: str
     ) -> tuple[Optional[int], str]:
         if window_type == WinType.ACCEPTED:

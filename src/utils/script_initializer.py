@@ -11,6 +11,7 @@ from src.core.termwm import (
     WinType,
     slots_db_handler as sdh,
 )
+from src.core.termwm.core.types import SecondaryWindow
 from src.utils.helpers import construct_script_name
 from src.utils.lock_file_manager import LockFileManager
 from src.utils.logging_utils import setup_logger
@@ -64,6 +65,7 @@ async def manage_script_startup(
     window_type: WinType,
     script_name: str,
     lock_file_manager: Optional[LockFileManager] = None,
+    secondary_windows: list[SecondaryWindow] | None = None,
 ) -> int | None:
     setup_signal_handlers()
     atexit.register(witness_atexit_execution)  # Lets us tell if cleanup
@@ -71,7 +73,9 @@ async def manage_script_startup(
 
     twm = TerminalWindowManager()
 
-    slot, name = await twm.adjust_window(slots_db_conn, window_type, script_name)
+    slot, name = await twm.adjust_window(
+        slots_db_conn, window_type, script_name, secondary_windows
+    )
     if window_type == WinType.DENIED:
         register_atexit_func(sdh.free_denied_slot_sync, slot)
         print(f"\n>>> Lock file is present for {script_name} <<<")
@@ -87,7 +91,8 @@ async def manage_script_startup(
 
 async def setup_script(
     script_name: str,
-) -> tuple[aiosqlite.Connection | None, int | None]:
+    secondary_windows: list[SecondaryWindow] | None = None,
+) -> tuple[aiosqlite.Connection, int | None]:
     lock_file_manager = LockFileManager(script_name)
     db_conn = await sdh.create_connection(TERMINAL_WINDOW_SLOTS_DB_FILE_PATH)
 
@@ -103,7 +108,7 @@ async def setup_script(
         window_type = WinType.ACCEPTED
 
     slot = await manage_script_startup(
-        db_conn, window_type, script_name, lock_file_manager
+        db_conn, window_type, script_name, lock_file_manager, secondary_windows
     )
 
     return db_conn, slot

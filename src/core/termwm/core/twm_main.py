@@ -33,15 +33,22 @@ class TerminalWindowManager:
         )
 
     async def adjust_window(
-        self, conn: aiosqlite.Connection, window_type: WinType, window_name: str
+        self,
+        conn: aiosqlite.Connection,
+        window_type: WinType,
+        window_name: str,
+        secondary_windows: list[SecondaryWindow] | None = None,
     ) -> tuple[Optional[int], str]:
         """Main method to adjust a window. This is the one to call from the script."""
-        slot, name = await self.manager.manage_window(conn, window_type, window_name)
+        slot, name = await self.manager.initially_manage_window(
+            conn, window_type, window_name
+        )
         logger.info(f"Adjusted window <{window_name}> of type {window_type.name}.")
         return slot, name
 
     async def adjust_secondary_windows(
         self,
+        conn: aiosqlite.Connection,
         slot: int,
         secondary_windows: List[SecondaryWindow],
     ) -> None:
@@ -49,7 +56,9 @@ class TerminalWindowManager:
         Adjusts secondary windows according to the primary window. Requires these
         secondary windows to have been created before calling this method.
         """
-        await self.manager.manage_secondary_windows(slot, secondary_windows)
+        await self.manager.initially_manage_secondary_windows(
+            conn, slot, secondary_windows
+        )
         logger.info(f"Adjusted secondary windows for slot {slot}.")
 
     async def bring_windows_to_foreground(

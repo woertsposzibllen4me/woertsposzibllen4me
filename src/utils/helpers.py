@@ -1,5 +1,5 @@
-import os
 import time
+from pathlib import Path
 
 
 def print_countdown(duration: int = 3) -> None:
@@ -10,20 +10,36 @@ def print_countdown(duration: int = 3) -> None:
 
 
 def construct_script_name(file_path: str) -> str:
-    """Construct a script name from the given file path.
+    """Construct a script name from a file path for further use.
 
-    This function ensures that the module name is included in logging, even when the
-    script is called as a subprocess, thereby avoiding the generic name `__main__` in
-    logs.
+    This function extracts a meaningful module name from the file path to avoid the
+    generic `__main__` name appearing in logs when scripts are run directly or as
+    subprocesses. It also play a major role in subprocesses identification by our
+    terminal_window_manager (tmw) module.
+
+    For main.py entry points, the parent directory name is automatically prefixed to
+    make them distinguishable (e.g., "shopwatcher_main" instead of just "main").
 
     Args:
-        file_path (str): The file path of the script. Pass the special
-                         variable `__file__` from the calling script to this
-                         function.
+        file_path: The file path of the script. Pass `__file__`.
 
     Returns:
-        str: The base name of the file without the extension, suitable for use
-             as a script name in logging.
+        The base name of the file without extension, with parent directory prefix for
+        main.py files.
+
+    Example:
+        # Regular module
+        SCRIPT_NAME = construct_script_name(__file__)  # "shop_tracker"
+
+        # Main entry point (automatically prefixed)
+        SCRIPT_NAME = construct_script_name(__file__)  # "shopwatcher_main"
 
     """
-    return os.path.splitext(os.path.basename(file_path))[0]
+    path = Path(file_path)
+    base_name = path.stem
+
+    if base_name == "main":
+        parent_name = path.parent.name
+        return f"{parent_name}_main"
+
+    return base_name

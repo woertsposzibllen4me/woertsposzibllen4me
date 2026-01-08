@@ -43,7 +43,7 @@ async def _manage_subprocess(message: str) -> None:
     if not len(parts) >= MIN_MSG_LENGTH:
         error_msg = (
             "Invalid message format, must be at least two separate words: target,"
-            "instructions"
+            " instructions"
         )
         logger.error(error_msg)
         raise ValueError(error_msg)
@@ -61,7 +61,7 @@ async def _manage_subprocess(message: str) -> None:
         # terminal window manager module.
 
         venv_python = PROJECT_ROOT_PATH / ".venv" / "Scripts" / "python.exe"
-        script_path = APPS_DIR_PATH / target / f"{target}_main.py"
+        script_path = APPS_DIR_PATH / target / "main.py"
 
         command = (
             f'start /min cmd /k "'

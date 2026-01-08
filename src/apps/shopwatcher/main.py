@@ -1,3 +1,5 @@
+"""Main entry point for the ShopWatcher application."""
+
 import asyncio
 
 import cv2 as cv
@@ -27,17 +29,18 @@ logger = setup_logger(SCRIPT_NAME, "DEBUG")
 twm = TerminalWindowManager()
 
 
-async def run_main_task(slot: int, shopwatcher: ShopDetector):
+async def run_main_task(slot: int, shopwatcher: ShopDetector) -> None:
+    """Run the main scanning and notification task."""
     mute_ssim_prints.set()
     main_task = asyncio.create_task(shopwatcher.scan_for_shop_and_notify(write=False))
     await secondary_windows_spawned.wait()
     await twm.adjust_secondary_windows(slot, SECONDARY_WINDOWS)
     mute_ssim_prints.clear()
     await main_task
-    return None
 
 
-async def main():
+async def main() -> None:
+    """Get this shit going."""
     socket_server_task = None
     slots_db_conn = None
     try:
@@ -62,7 +65,7 @@ async def main():
 
     except Exception as e:
         print(f"Unexpected error of type: {type(e).__name__}: {e}")
-        logger.exception(f"Unexpected error: {e}")
+        logger.exception("Unexpected error")
         raise
 
     finally:

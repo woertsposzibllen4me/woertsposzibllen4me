@@ -63,8 +63,14 @@ class ShopDetector:
     ) -> float:
         return cast("float", ssim(image_a, image_b))
 
-    async def scan_for_shop_and_notify(self) -> None:
-        """Scan for the shop on the screen and react when it appears/disappears."""
+    async def scan_for_shop_and_notify(self, *, write: bool) -> None:
+        """Scan for the shop on the screen and react when it appears/disappears.
+
+        Args:
+            write: If True, saves the current captured frame as a new template image
+                  (see SHOP_TEMPLATE_IMAGE_PATH).
+
+        """
         template = cv.imread(str(SHOP_TEMPLATE_IMAGE_PATH), cv.IMREAD_GRAYSCALE)
 
         while not self.socket_handler.stop_event.is_set():
@@ -73,6 +79,12 @@ class ShopDetector:
             match_value = await self._compare_images(gray_frame, template)
             cv.imshow(SECONDARY_WINDOWS[0].name, gray_frame)
             self.secondary_windows_spawned.set()
+
+            if write:
+                cv.imwrite(
+                    str(SHOP_TEMPLATE_IMAGE_PATH.parent / "new_shop_template.jpg"),
+                    gray_frame,
+                )
 
             if cv.waitKey(1) == ord("q"):
                 break

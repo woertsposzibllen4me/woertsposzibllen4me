@@ -29,7 +29,7 @@ twm = TerminalWindowManager()
 
 async def run_main_task(slot: int, shopwatcher: ShopDetector):
     mute_ssim_prints.set()
-    main_task = asyncio.create_task(shopwatcher.scan_for_shop_and_notify())
+    main_task = asyncio.create_task(shopwatcher.scan_for_shop_and_notify(write=False))
     await secondary_windows_spawned.wait()
     await twm.adjust_secondary_windows(slot, SECONDARY_WINDOWS)
     mute_ssim_prints.clear()

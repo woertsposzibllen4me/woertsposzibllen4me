@@ -11,7 +11,7 @@ _OBS_DIR = _BASE_DIR / "obs"
 
 # Window config for TerminalWindowManager
 SECONDARY_WINDOWS = [SecondaryWindow("opencv_shop_scanner", 150, 100)]
-SCREEN_CAPTURE_AREA = {"left": 1853, "top": 50, "width": 30, "height": 35}
+SCREEN_CAPTURE_AREA = {"left": 1823, "top": 50, "width": 30, "height": 35}
 
 # OpenCV templates
 SHOP_TEMPLATE_IMAGE_PATH = _OPENCV_DIR / "shop_top_right_icon.jpg"

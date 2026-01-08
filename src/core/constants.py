@@ -1,4 +1,4 @@
-import os
+"""Project-wide constant values."""
 
 from src.config.settings import PROJECT_DIR_PATH
 
@@ -6,10 +6,10 @@ from src.config.settings import PROJECT_DIR_PATH
 APPS_DIR_PATH = PROJECT_DIR_PATH / "src" / "apps"
 
 # Temp project paths
-TEMP_DIR_PATH = os.path.join(PROJECT_DIR_PATH, "temp")
-LOG_DIR_PATH = os.path.join(TEMP_DIR_PATH, "logs")
-LOCK_FILES_DIR_PATH = os.path.join(TEMP_DIR_PATH, "lock_files")
-COMMON_LOGS_FILE_PATH = os.path.join(LOG_DIR_PATH, "all_logs.log")
+TEMP_DIR_PATH = PROJECT_DIR_PATH / "temp"
+LOG_DIR_PATH = TEMP_DIR_PATH / "logs"
+LOCK_FILES_DIR_PATH = TEMP_DIR_PATH / "lock_files"
+COMMON_LOGS_FILE_PATH = LOG_DIR_PATH / "all_logs.log"
 
 # URLs
 STREAMERBOT_WS_URL = "ws://127.0.0.1:50001/"

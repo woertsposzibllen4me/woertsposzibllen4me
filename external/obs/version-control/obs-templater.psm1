@@ -127,7 +127,7 @@ function ConvertFrom-ObsTemplate {
     throw "Input file must be a .vcs-template.json file, got: $inputFileName"
   }
 
-  $OutputFile = $InputFile -replace "\.vcs-template\.", "."
+  $OutputFile = $InputFile -replace "\.vcs-template\.json$", ".json"
 
   Write-Host "Creating real config from template..." -ForegroundColor Green
   Write-Host "Input:  $InputFile" -ForegroundColor Gray
@@ -153,4 +153,5 @@ Write-Host "Usage:" -ForegroundColor Cyan
 Write-Host "  ConvertTo-ObsTemplate 'scenes.json'                # Creates vcs-template.json" -ForegroundColor Gray
 Write-Host "  ConvertTo-ObsTemplate 'scenes.json' 'custom/path'  # Uses custom VCS relative path in repo" -ForegroundColor Gray
 Write-Host "  ConvertFrom-ObsTemplate 'scenes.vcs-template.json' # Creates scenes.json" -ForegroundColor Gray
+Export-ModuleMember -Function ConvertTo-ObsTemplate, ConvertFrom-ObsTemplate
 

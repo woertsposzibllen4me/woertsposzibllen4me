@@ -121,7 +121,7 @@ function ConvertFrom-StreamDeckTemplate {
     throw "Input file must be a .vcs-template.json file, got: $inputFileName"
   }
 
-  $OutputFile = $InputFile -replace "\.template\.", "."
+  $OutputFile = $InputFile -replace "\.vcs-template\.json$", ".json"
 
   Write-Host "Creating real StreamDeck config from template..." -ForegroundColor Green
   Write-Host "Input:  $InputFile" -ForegroundColor Gray
@@ -145,4 +145,5 @@ Write-Host "Usage:" -ForegroundColor Cyan
 Write-Host "  ConvertTo-StreamDeckTemplate 'manifest.json'                # Creates vcs-template.json" -ForegroundColor Gray
 Write-Host "  ConvertTo-ObsTemplate 'manifest.json' 'custom/path'         # Uses custom VCS relative path in repo" -ForegroundColor Gray
 Write-Host "  ConvertFrom-StreamDeckTemplate 'manifest.vcs-template.json' # Creates manifest.json" -ForegroundColor Gray
+Export-ModuleMember -Function ConvertTo-StreamDeckTemplate, ConvertFrom-StreamDeckTemplate
 

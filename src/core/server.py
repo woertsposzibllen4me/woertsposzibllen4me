@@ -1,6 +1,6 @@
-"""
-Websocket server made for listening to a basic StreamDeck Websocket client
-plugin. This is where the scripts will be launched from... and sometimes
+"""Websocket server made for listening to a basic StreamDeck Websocket client plugin.
+
+This is where the scripts will be launched from... and sometimes
 communicated with, although this is the kind of complex stuff I'll worry
 about later.
 """
@@ -24,6 +24,8 @@ from src.core.termwm import (
     TERMINAL_WINDOW_SLOTS_DB_FILE_PATH,
     TerminalWindowManager,
     WinType,
+)
+from src.core.termwm import (
     slots_db_handler as sdh,
 )
 from src.utils.helpers import construct_script_name

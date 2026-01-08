@@ -366,7 +366,7 @@
           {
             "name": "DSLR Clone (Cut)",
             "source_uuid": "af988ae1-d0b9-457e-8edb-a91862d2e2a0",
-            "visible": false,
+            "visible": true,
             "locked": false,
             "rot": 0.0,
             "scale_ref": {
@@ -1167,12 +1167,12 @@
         "libobs.hide_scene_item.4": [],
         "libobs.show_scene_item.3": [],
         "libobs.hide_scene_item.3": [],
-        "libobs.show_scene_item.5": [],
-        "libobs.hide_scene_item.5": [],
+        "libobs.show_scene_item.53": [],
+        "libobs.hide_scene_item.53": [],
         "libobs.show_scene_item.25": [],
         "libobs.hide_scene_item.25": [],
-        "libobs.show_scene_item.53": [],
-        "libobs.hide_scene_item.53": []
+        "libobs.show_scene_item.5": [],
+        "libobs.hide_scene_item.5": []
       },
       "deinterlace_mode": 0,
       "deinterlace_field_order": 0,
@@ -1758,12 +1758,12 @@
       "push-to-talk-delay": 0,
       "hotkeys": {
         "OBSBasic.SelectScene": [],
+        "Move to origin": [],
+        "Move to buy phase": [],
         "libobs.show_scene_item.7": [],
         "libobs.hide_scene_item.7": [],
         "libobs.show_scene_item.17": [],
-        "libobs.hide_scene_item.17": [],
-        "Move to origin": [],
-        "Move to buy phase": []
+        "libobs.hide_scene_item.17": []
       },
       "deinterlace_mode": 0,
       "deinterlace_field_order": 0,
@@ -2689,7 +2689,7 @@
           {
             "name": "DSLR Clone (Cut)",
             "source_uuid": "af988ae1-d0b9-457e-8edb-a91862d2e2a0",
-            "visible": false,
+            "visible": true,
             "locked": false,
             "rot": 0.0,
             "scale_ref": {
@@ -3390,19 +3390,19 @@
   "quick_transitions": [],
   "transitions": [
     {
+      "name": "Slide",
+      "id": "slide_transition",
+      "settings": {
+        "direction": "left"
+      }
+    },
+    {
       "name": "Move",
       "id": "move_transition",
       "settings": {
         "transition_match": "None",
         "transition_in": "None",
         "transition_out": "None"
-      }
-    },
-    {
-      "name": "Slide",
-      "id": "slide_transition",
-      "settings": {
-        "direction": "left"
       }
     }
   ],

@@ -1,4 +1,7 @@
+"""Module for managing the main logic flow of pre-game phase detection."""
+
 import asyncio
+from typing import final
 
 from src.apps.pregamespy.core.game_state_manager import GameStateManager
 from src.apps.pregamespy.core.images_processor import ImagesProcessor
@@ -6,33 +9,51 @@ from src.apps.pregamespy.core.socket_handler import PreGamePhaseHandler
 from src.connection.websocket_client import WebSocketClient
 
 
+# pylint: disable=too-few-public-methods
+@final
 class PreGamePhaseDetector:
-    def __init__(self, socket_handler: PreGamePhaseHandler, ws_client: WebSocketClient):
+    """Class to manage the main logic flow of pre-game phase detection."""
+
+    def __init__(
+        self, socket_handler: PreGamePhaseHandler, ws_client: WebSocketClient
+    ) -> None:
+        """Initialize the PreGamePhaseDetector.
+
+        Args:
+            socket_handler: for communication with this instance across processes.
+            ws_client: for sending message over WebSocket urls.
+
+        """
         self.image_processor = ImagesProcessor()
         self.state_manager = GameStateManager(self.image_processor, ws_client)
         self.socket_handler = socket_handler
 
-    async def detect_pregame_phase(self):
+    async def detect_pregame_phase(self) -> None:
+        """Start main loop to detect pre-game phases."""
         await self.state_manager.set_state_finding_game()
         target = 0.7  # target value for ssim
         while not self.socket_handler.stop_event.is_set():
             ssim_match = await self.image_processor.scan_screen_for_matches()
-            await self.handle_finding_game(ssim_match, target)
+            await self._handle_finding_game(ssim_match, target)
             if self.state_manager.game_phase.finding_game:
                 continue
-            await self.wait_for_transitions(ssim_match, target)
-            await self.handle_tabbed_states(ssim_match, target)
-            await self.handle_pregame_phases(ssim_match, target)
+            await self._wait_for_transitions(ssim_match, target)
+            await self._handle_tabbed_states(ssim_match, target)
+            await self._handle_pregame_phases(ssim_match, target)
             await asyncio.sleep(0.01)
 
-    async def handle_finding_game(self, ssim_match: dict[str, float], target: float):
+    async def _handle_finding_game(
+        self, ssim_match: dict[str, float], target: float
+    ) -> None:
         if (
             ssim_match["hero_pick"] >= target
             and self.state_manager.game_phase.finding_game
         ):
             await self.state_manager.set_state_game_found()
 
-    async def wait_for_transitions(self, ssim_match: dict[str, float], target: float):
+    async def _wait_for_transitions(
+        self, ssim_match: dict[str, float], target: float
+    ) -> None:
         if (
             self.state_manager.tabbed.to_settings_screen
             and ssim_match["settings"] < target
@@ -41,6 +62,7 @@ class PreGamePhaseDetector:
             await self.state_manager.wait_for_settings_screen_fadeout()
 
         elif (
+            # pylint: disable=chained-comparison # more readable this way.
             self.state_manager.game_phase.starting_buy
             and ssim_match["starting_buy"] < target
             and ssim_match["dota_tab"] < target
@@ -49,7 +71,9 @@ class PreGamePhaseDetector:
         ):
             await self.state_manager.wait_for_starting_buy_slideout()
 
-    async def handle_tabbed_states(self, ssim_match: dict[str, float], target: float):
+    async def _handle_tabbed_states(
+        self, ssim_match: dict[str, float], target: float
+    ) -> None:
         if (
             ssim_match["dota_tab"] >= target
             and not self.state_manager.tabbed.to_dota_menu
@@ -68,7 +92,9 @@ class PreGamePhaseDetector:
         ):
             await self.state_manager.set_state_settings_screen()
 
-    async def handle_pregame_phases(self, ssim_match: dict[str, float], target: float):
+    async def _handle_pregame_phases(
+        self, ssim_match: dict[str, float], target: float
+    ) -> None:
         if (
             ssim_match["starting_buy"] >= target
             and not self.state_manager.game_phase.starting_buy

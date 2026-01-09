@@ -1,4 +1,4 @@
-import os
+"""Constants for terminal window manager."""
 
 from src.config.settings import PROJECT_ROOT_PATH
 
@@ -8,6 +8,6 @@ MAX_WINDOWS_PER_COLUMN = 1040 // MAIN_WINDOW_HEIGHT  # So currently 4
 
 WINDOW_NAME_SUFFIX = "twm_"
 SERVER_WINDOW_NAME = "MY SERVER"
-TERMINAL_WINDOW_SLOTS_DB_FILE_PATH = os.path.join(
-    PROJECT_ROOT_PATH, "src/core/termwm/terminal_window_slots.db"
+TERMINAL_WINDOW_SLOTS_DB_FILE_PATH = (
+    PROJECT_ROOT_PATH / "src/core/termwm/terminal_window_slots.db"
 )

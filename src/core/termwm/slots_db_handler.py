@@ -1,5 +1,6 @@
 import asyncio
 import sqlite3
+from pathlib import Path
 from typing import Optional
 
 import aiosqlite
@@ -18,11 +19,14 @@ SCRIPT_NAME = construct_script_name(__file__)
 logger = setup_logger(SCRIPT_NAME, "DEBUG")
 
 
-async def create_connection(db_file: str) -> aiosqlite.Connection | None:
+async def create_connection(db_file: str | Path) -> aiosqlite.Connection | None:
     """Create a database connection to the SQLite database."""
     db_conn = None
+    if isinstance(db_file, Path):
+        db_file = str(db_file)
     try:
         db_conn = await aiosqlite.connect(db_file)
+        logger.debug(f"obtained conn {db_conn} to database {db_file}")
 
         # create the slots tables if they do not exist
         await create_slots_table(db_conn)

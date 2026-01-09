@@ -34,7 +34,7 @@ PORT = SUBPROCESSES_PORTS["pregamespy"]
 twm = TerminalWindowManager()
 
 
-async def setup_optional_new_capture_area(
+async def _setup_optional_new_capture_area(
     image_processor: ImageProcessor,
     *,
     enable: bool,
@@ -83,7 +83,7 @@ async def main() -> None:
         await ws_client.establish_connection()
 
         detector = PreGamePhaseDetector(socket_server_handler, ws_client)
-        await setup_optional_new_capture_area(
+        await _setup_optional_new_capture_area(
             detector.image_processor,
             enable=False,
         )

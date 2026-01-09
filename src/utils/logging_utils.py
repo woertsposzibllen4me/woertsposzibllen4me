@@ -1,8 +1,10 @@
-import logging
-import os
-from logging import Logger
-from typing import Literal
+"""Utility functions for setting up and managing loggers."""
 
+import configparser
+import logging
+from logging import Logger
+
+from src.config.settings import PROJECT_ROOT_PATH
 from src.core.constants import COMMON_LOGS_FILE_PATH, LOG_DIR_PATH
 
 LOG_LEVELS = {
@@ -16,12 +18,30 @@ LOG_LEVELS = {
 
 def setup_logger(
     file_name: str,
-    level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "DEBUG",
+    level: str | None = None,
 ) -> logging.Logger:
-    script_log_file_path = os.path.join(LOG_DIR_PATH, f"{file_name}.log")
+    """Set up a logger that logs to a script-specific log file and a common log file.
+
+    If a logging level is not provided, it reads from the configuration file situated
+    in `config/settings.ini`
+    """
+    script_log_file_path = LOG_DIR_PATH / f"{file_name}.log"
     common_log_file_path = COMMON_LOGS_FILE_PATH
 
-    with open(script_log_file_path, "a", encoding="utf-8") as log_file:
+    if level is None:
+        config = configparser.ConfigParser()
+        config_path = PROJECT_ROOT_PATH / "config" / "settings.ini"
+
+        if config.read(config_path):
+            level = config.get("logging", "level", fallback="DEBUG").upper()
+        else:
+            level = "DEBUG"
+
+    level = level.upper()
+    if level not in LOG_LEVELS:
+        level = "DEBUG"
+
+    with script_log_file_path.open("a", encoding="utf-8") as log_file:
         log_file.write("<< New Log Entry >>\n")
 
     logger = logging.getLogger(file_name)
@@ -49,7 +69,12 @@ def setup_logger(
     return logger
 
 
-def log_empty_lines(logger: Logger, lines: int = 1):
+def log_empty_lines(logger: Logger, lines: int = 1) -> None:
+    """Log empty lines to all file handlers of the given logger.
+
+    Allows to space the entry better and create gaps that dont have the timestamp info
+    in them.
+    """
     for handler in logger.handlers:
         if isinstance(handler, logging.FileHandler):
             handler.stream.write(lines * "\n")

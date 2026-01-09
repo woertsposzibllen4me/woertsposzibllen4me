@@ -8,7 +8,7 @@ dev = ["ruff"]
 [tool.basedpyright]
 reportUnusedImport = false                # taken care of by ruff
 reportImplicitStringConcatenation = false # Prefer ruff's implicit enforcement
-reportUnusedCallResult = false            # Can't see the use ...
+reportUnusedCallResult = false            # Too advanced for me now ngl
 # reportUndefinedVariable = false
 
 [tool.pylint.main]
@@ -37,7 +37,7 @@ disable = [
   "undefined-variable",  # (HBOL)
   "import-error",        # (HBOL)
   "unused-import",       # (HBOL)
-  "unused-variable",     # (HBOL pyright)
+  "unused-variable",     # (HBOL)
   "trailing-whitespace", # (HBOL)
   # "trailing-newlines",   # (tends to trigger in empty __init__.py files)
   "no-name-in-module", # (HBOL)

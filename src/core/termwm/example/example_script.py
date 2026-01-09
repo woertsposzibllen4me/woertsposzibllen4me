@@ -41,7 +41,7 @@ async def main(clear_db_slots=False) -> None:
         return
 
     main_manager = TerminalWindowManager()
-    slot, _ = await main_manager.adjust_window(conn, WinType.ACCEPTED, "Example Script")
+    slot, _ = await main_manager.adjust_terminal_window(conn, WinType.ACCEPTED, "Example Script")
 
     if slot is None:
         print("No slot in DB available/error occured.")

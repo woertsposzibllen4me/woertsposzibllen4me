@@ -184,7 +184,7 @@ async def main() -> None:
         logger.warning("Could not connect to the windows slots database.")
         print("Could not connect to the windows slots database.")
         return
-    await twm.adjust_window(conn, WinType.SERVER, "SERVER")
+    await twm.adjust_terminal_window(conn, WinType.SERVER, "SERVER")
     websocket_server = await websockets.serve(
         create_websocket_handler(conn), "localhost", 50000
     )

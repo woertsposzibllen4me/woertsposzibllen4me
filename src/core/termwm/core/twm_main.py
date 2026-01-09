@@ -32,12 +32,11 @@ class TerminalWindowManager:
             logger=logger,
         )
 
-    async def adjust_window(
+    async def adjust_terminal_window(
         self,
         conn: aiosqlite.Connection,
         window_type: WinType,
         window_name: str,
-        secondary_windows: list[SecondaryWindow] | None = None,
     ) -> tuple[Optional[int], str]:
         """Entry method to adjust a script's terminal window."""
         slot, name = await self.manager.initially_manage_window(

@@ -47,7 +47,7 @@ async def main() -> None:
     socket_server_task = None
     slots_db_conn = None
     try:
-        slots_db_conn, slot = await setup_script(SCRIPT_NAME, SECONDARY_WINDOWS)
+        slots_db_conn, slot = await setup_script(SCRIPT_NAME)
         if slot is None:
             logger.error("No slot available, exiting.")
             return

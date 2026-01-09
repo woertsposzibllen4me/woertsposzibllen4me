@@ -39,7 +39,7 @@ class TerminalWindowManager:
         window_name: str,
         secondary_windows: list[SecondaryWindow] | None = None,
     ) -> tuple[Optional[int], str]:
-        """Main method to adjust a window. This is the one to call from the script."""
+        """Entry method to adjust a script's terminal window."""
         slot, name = await self.manager.initially_manage_window(
             conn, window_type, window_name
         )

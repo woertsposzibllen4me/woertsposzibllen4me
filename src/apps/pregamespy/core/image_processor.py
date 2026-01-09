@@ -1,10 +1,14 @@
+"""Image processing module for screen capture and analysis on multiple areas."""
+
 import asyncio
-from typing import Dict
+from typing import cast
 
 import cv2 as cv
 import mss
 import numpy as np
-from skimage.metrics import structural_similarity as ssim  # pylint: disable=E0611
+from skimage.metrics import (
+    structural_similarity as ssim,  # pyright: ignore[reportUnknownVariableType]
+)
 
 from src.apps.pregamespy.core.constants import (
     DESKTOP_TAB_AREA,
@@ -28,9 +32,14 @@ from src.apps.pregamespy.core.shared_events import (
 
 
 class ImageProcessor:
-    async def capture_new_area(self, capture_area: dict[str, int], filename: str):
+    """Processes images captured from the screen on simulatenous different areas."""
+
+    async def capture_new_area(
+        self, capture_area: dict[str, int], filename: str
+    ) -> None:
+        """Capture a new area for development purposes."""
         while True:
-            frame = await self.capture_window(capture_area)
+            frame = await self._capture_window(capture_area)
             gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             cv.imshow("new_area_capture", gray_frame)
             secondary_windows_spawned.set()
@@ -40,21 +49,23 @@ class ImageProcessor:
             await asyncio.sleep(0.1)
 
     @staticmethod
-    async def capture_window(area: dict[str, int]):
+    async def _capture_window(area: dict[str, int]) -> np.ndarray:
         with mss.mss() as sct:
             img = sct.grab(area)
         return np.array(img)
 
     @staticmethod
-    def compare_images(image_a: cv.typing.MatLike, image_b: cv.typing.MatLike) -> float:
-        return ssim(image_a, image_b)
-
-    async def capture_and_process_image(
-        self, alias: str, capture_area: dict, template: cv.typing.MatLike
+    def _compare_images(
+        image_a: cv.typing.MatLike, image_b: cv.typing.MatLike
     ) -> float:
-        frame = await self.capture_window(capture_area)
+        return cast("float", ssim(image_a, image_b))
+
+    async def _capture_and_process_image(
+        self, alias: str, capture_area: dict[str, int], template: cv.typing.MatLike
+    ) -> float:
+        frame = await self._capture_window(capture_area)
         gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-        match_value = self.compare_images(gray_frame, template)
+        match_value = self._compare_images(gray_frame, template)
 
         window_name = next(
             (window.name for window in SECONDARY_WINDOWS if alias in window.name), None
@@ -68,37 +79,43 @@ class ImageProcessor:
 
         return match_value
 
-    async def detect_hero_pick(self):
-        return await self.capture_and_process_image(
+    async def _detect_hero_pick(self) -> float:
+        return await self._capture_and_process_image(
             "hero_pick_scanner", HERO_PICK_AREA, HERO_PICK_TEMPLATE
         )
 
-    async def detect_starting_buy(self):
-        return await self.capture_and_process_image(
+    async def _detect_starting_buy(self) -> float:
+        return await self._capture_and_process_image(
             "starting_buy_scanner", STARTING_BUY_AREA, STARTING_BUY_TEMPLATE
         )
 
-    async def detect_dota_tab_out(self):
-        return await self.capture_and_process_image(
+    async def _detect_dota_tab_out(self) -> float:
+        return await self._capture_and_process_image(
             "dota_tab_scanner", DOTA_TAB_AREA, DOTA_TAB_TEMPLATE
         )
 
-    async def detect_desktop_tab_out(self):
-        return await self.capture_and_process_image(
+    async def _detect_desktop_tab_out(self) -> float:
+        return await self._capture_and_process_image(
             "desktop_tab_scanner", DESKTOP_TAB_AREA, DESKTOP_TAB_TEMPLATE
         )
 
-    async def detect_settings_screen(self):
-        return await self.capture_and_process_image(
+    async def _detect_settings_screen(self) -> float:
+        return await self._capture_and_process_image(
             "settings_scanner", SETTINGS_AREA, SETTINGS_TEMPLATE
         )
 
-    async def detect_in_game(self):
-        return await self.capture_and_process_image(
+    async def _detect_in_game(self) -> float:
+        return await self._capture_and_process_image(
             "in_game_scanner", IN_GAME_AREA, IN_GAME_TEMPLATE
         )
 
-    async def scan_screen_for_matches(self) -> Dict[str, float]:
+    async def scan_screen_for_matches(self) -> dict[str, float]:
+        """Scan the screen for matches in all defined areas.
+
+        Returns:
+            A dictionary with SSIM match values for each area.
+
+        """
         (
             hero_pick_result,
             starting_buy_result,
@@ -107,12 +124,12 @@ class ImageProcessor:
             settings_screen_result,
             in_game_result,
         ) = await asyncio.gather(
-            self.detect_hero_pick(),
-            self.detect_starting_buy(),
-            self.detect_dota_tab_out(),
-            self.detect_desktop_tab_out(),
-            self.detect_settings_screen(),
-            self.detect_in_game(),
+            self._detect_hero_pick(),
+            self._detect_starting_buy(),
+            self._detect_dota_tab_out(),
+            self._detect_desktop_tab_out(),
+            self._detect_settings_screen(),
+            self._detect_in_game(),
         )
 
         secondary_windows_spawned.set()

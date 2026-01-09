@@ -44,7 +44,7 @@ from src.utils.helpers import construct_script_name
 from src.utils.logging_utils import log_empty_lines, setup_logger
 
 SCRIPT_NAME = construct_script_name(__file__)
-logger = setup_logger(SCRIPT_NAME, "DEBUG")
+logger = setup_logger(SCRIPT_NAME)
 
 
 class TypingDetector:

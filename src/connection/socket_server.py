@@ -138,4 +138,4 @@ class BaseHandler:
 
 
 def _assign_default_logger() -> Logger:
-    return setup_logger(SCRIPT_NAME, "DEBUG")
+    return setup_logger(SCRIPT_NAME)

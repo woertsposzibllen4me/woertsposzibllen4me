@@ -26,7 +26,7 @@ from src.utils.script_initializer import setup_script
 PORT = SUBPROCESSES_PORTS["shopwatcher"]
 SCRIPT_NAME = construct_script_name(__file__)
 
-logger = setup_logger(SCRIPT_NAME, "DEBUG")
+logger = setup_logger(SCRIPT_NAME)
 twm = TerminalWindowManager()
 
 

@@ -35,7 +35,7 @@ twm = TerminalWindowManager()
 SCRIPT_NAME = construct_script_name(__file__)
 MIN_MSG_LENGTH = 2
 
-logger = setup_logger(SCRIPT_NAME, "DEBUG")
+logger = setup_logger(SCRIPT_NAME)
 
 
 async def _manage_subprocess(message: str) -> None:

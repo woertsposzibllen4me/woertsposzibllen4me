@@ -30,7 +30,7 @@ from src.utils.logging_utils import setup_logger
 from src.utils.script_initializer import setup_script
 
 SCRIPT_NAME = construct_script_name(__file__)
-logger = setup_logger(SCRIPT_NAME, "DEBUG")
+logger = setup_logger(SCRIPT_NAME)
 
 PORT = SUBPROCESSES_PORTS["pregamespy"]
 twm = TerminalWindowManager()

@@ -16,7 +16,7 @@ MAX_AMOUNT_OF_WINDOWS = 7  # main and secondaries included
 DENIED_SLOTS_AMOUNT = 10
 
 SCRIPT_NAME = construct_script_name(__file__)
-logger = setup_logger(SCRIPT_NAME, "DEBUG")
+logger = setup_logger(SCRIPT_NAME)
 
 
 async def create_connection(db_file: str | Path) -> aiosqlite.Connection | None:

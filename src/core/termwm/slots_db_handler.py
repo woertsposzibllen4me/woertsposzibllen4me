@@ -50,7 +50,8 @@ async def create_connection(db_file: str | Path) -> aiosqlite.Connection | None:
         logger.exception("Error creating database connection")
         if db_conn:
             await db_conn.close()
-
+        return None
+    else:
         return db_conn
 
 

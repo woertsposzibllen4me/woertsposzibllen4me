@@ -118,12 +118,12 @@ class GameStateManager:
                 break
         mute_ssim_prints.clear()
 
-    async def wait_for_settings_screen_exiting_fade_out(self):
+    async def wait_for_settings_screen_fadeout(self) -> None:
         """Wait for the settings screen to finish its fade-out transition."""
         self.tabbed.to_settings_screen = False
         await asyncio.sleep(0.25)
 
-    async def wait_for_starting_buy_screen_transition_out(self):
+    async def wait_for_starting_buy_slideout(self) -> None:
         """Wait for the slide transition animation back to hero picks screen."""
         self.game_phase.starting_buy = False
         await asyncio.sleep(0.6)

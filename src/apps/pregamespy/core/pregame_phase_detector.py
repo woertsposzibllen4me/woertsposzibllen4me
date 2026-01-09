@@ -38,7 +38,7 @@ class PreGamePhaseDetector:
             and ssim_match["settings"] < target
             and ssim_match["desktop_tab"] < target
         ):
-            await self.state_manager.wait_for_settings_screen_exiting_fade_out()
+            await self.state_manager.wait_for_settings_screen_fadeout()
 
         elif (
             self.state_manager.game_phase.starting_buy
@@ -47,7 +47,7 @@ class PreGamePhaseDetector:
             and ssim_match["desktop_tab"] < target
             and ssim_match["hero_pick"] >= target
         ):
-            await self.state_manager.wait_for_starting_buy_screen_transition_out()
+            await self.state_manager.wait_for_starting_buy_slideout()
 
     async def handle_tabbed_states(self, ssim_match: dict[str, float], target: float):
         if (

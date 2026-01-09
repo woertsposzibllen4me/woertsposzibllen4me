@@ -7,7 +7,7 @@ from src.apps.pregamespy.core.constants import (
     NEW_CAPTURE_AREA,
     SECONDARY_WINDOWS,
 )
-from src.apps.pregamespy.core.image_processor import ImageProcessor
+from src.apps.pregamespy.core.images_processor import ImagesProcessor
 from src.apps.pregamespy.core.pregame_phase_detector import (
     PreGamePhaseDetector,
 )
@@ -35,7 +35,7 @@ twm = TerminalWindowManager()
 
 
 async def _setup_optional_new_capture_area(
-    image_processor: ImageProcessor,
+    image_processor: ImagesProcessor,
     *,
     enable: bool,
 ) -> None:

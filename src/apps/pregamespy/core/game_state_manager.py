@@ -11,7 +11,7 @@ from src.apps.pregamespy.core.constants import (
     SCENE_CHANGE_FOR_PREGAME,
     SCENE_CHANGE_IN_GAME,
 )
-from src.apps.pregamespy.core.image_processor import ImageProcessor
+from src.apps.pregamespy.core.images_processor import ImagesProcessor
 from src.apps.pregamespy.core.pick_phase import PickPhase
 from src.apps.pregamespy.core.shared_events import mute_ssim_prints
 from src.apps.pregamespy.core.tabbed import Tabbed
@@ -22,7 +22,7 @@ from src.connection.websocket_client import WebSocketClient
 class GameStateManager:
     """Manages the game state transitions and notifies via WebSocket."""
 
-    def __init__(self, image_processor: ImageProcessor, ws: WebSocketClient) -> None:
+    def __init__(self, image_processor: ImagesProcessor, ws: WebSocketClient) -> None:
         """Initialize the GameStateManager."""
         self.image_processor = image_processor
         self.ws = ws

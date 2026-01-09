@@ -1,14 +1,14 @@
 import asyncio
 
 from src.apps.pregamespy.core.game_state_manager import GameStateManager
-from src.apps.pregamespy.core.image_processor import ImageProcessor
+from src.apps.pregamespy.core.images_processor import ImagesProcessor
 from src.apps.pregamespy.core.socket_handler import PreGamePhaseHandler
 from src.connection.websocket_client import WebSocketClient
 
 
 class PreGamePhaseDetector:
     def __init__(self, socket_handler: PreGamePhaseHandler, ws_client: WebSocketClient):
-        self.image_processor = ImageProcessor()
+        self.image_processor = ImagesProcessor()
         self.state_manager = GameStateManager(self.image_processor, ws_client)
         self.socket_handler = socket_handler
 

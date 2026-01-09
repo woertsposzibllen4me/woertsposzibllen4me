@@ -31,7 +31,7 @@ from src.apps.pregamespy.core.shared_events import (
 )
 
 
-class ImageProcessor:
+class ImagesProcessor:
     """Processes images captured from the screen on simulatenous different areas."""
 
     async def capture_new_area(

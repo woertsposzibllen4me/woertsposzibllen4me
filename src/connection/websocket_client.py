@@ -1,3 +1,5 @@
+"""WebSocket client for sending and receiving JSON messages with external apps."""
+
 from logging import Logger
 from typing import final
 

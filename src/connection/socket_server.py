@@ -32,6 +32,11 @@ class BaseHandler:
     logger: Logger
     stop_event: asyncio.Event
 
+    @property
+    def handler_name(self) -> str:
+        """Return the handler name, defaults to class name."""
+        return self.__class__.__name__
+
     def __init__(
         self, port: int, stop_message: str, logger: Logger | None = None
     ) -> None:
@@ -120,17 +125,26 @@ class BaseHandler:
 
     async def run_socket_server(self) -> None:
         """Run the socket server."""
-        self.logger.info("Starting Socket server")
+        self.logger.debug(
+            f"Starting Socket server {self.handler_name} on port {self.port}"
+        )
         server = await asyncio.start_server(
             self.handle_socket_client, "localhost", self.port
         )
         addr = server.sockets[0].getsockname()  # pyright: ignore[reportAny]
-        self.logger.info(f"Socket server serving on {addr}")
+        self.logger.info(f"Socket server {self.handler_name} serving on {addr}")
 
         try:
             await server.serve_forever()
+        except KeyboardInterrupt:
+            self.logger.info(
+                f"Socket server {self.handler_name} on port {self.port} stopping due "
+                "to keyboard interrupt"
+            )
         except asyncio.CancelledError:
-            self.logger.exception("Socket server canceled")
+            self.logger.info(
+                f"Socket server {self.handler_name} on port {self.port} was cancelled"
+            )
         finally:
             server.close()
             await server.wait_closed()

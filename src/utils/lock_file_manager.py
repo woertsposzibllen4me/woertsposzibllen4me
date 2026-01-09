@@ -11,7 +11,6 @@ SCRIPT_NAME = construct_script_name(__file__)
 
 
 class LockFileManager:
-
     def __init__(self, script_name: str, logger: Optional[Logger] = None):
         self.filename = script_name  # name of script instantiating the class
         self.lock_dir = LOCK_DIR
@@ -33,7 +32,7 @@ class LockFileManager:
             )
 
     def remove_lock_file(self):
-        self.logger.info(f"Attempting to remove lock file for <{self.filename}>")
+        self.logger.debug(f"Attempting to remove lock file for <{self.filename}>")
         try:
             os.remove(self.lock_file_path)
             print(f"[{self.class_name}] Removed lock file: {self.filename}.lock")

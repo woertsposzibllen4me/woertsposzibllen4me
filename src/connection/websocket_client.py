@@ -35,6 +35,10 @@ class WebSocketClient:
         try:
             self.ws = await websockets.connect(self.url)
             self.logger.info(f"Established websocket connection: {self.ws}")
+        except ConnectionRefusedError as e:
+            self.logger.error(f"Connection refused: {e}")  # noqa: TRY400 # No need to
+            # vomit in the logs for a simple case of not running the websocket server
+            # this connects to..
         except WebSocketException:
             self.logger.exception("Websocket Exception")
         except OSError:

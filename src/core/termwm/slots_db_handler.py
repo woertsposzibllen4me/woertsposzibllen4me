@@ -117,9 +117,11 @@ async def occupy_slot_with_data(
                 if not row:
                     logger.error(f"Slot {slot_id} does not exist.")
                     return
-                if not row[0]:
-                    logger.warning(f"Slot {slot_id} is already occupied.")
-                    pass
+                if not row[0] and start_index == 0:
+                    logger.warning(
+                        f"Slot {slot_id} is already occupied and start_index is "
+                        "{start_index}, data will be overriden."
+                    )
                 else:
                     # Only set is_open to False on first write
                     await cur.execute(
@@ -167,7 +169,7 @@ async def get_first_free_slot(conn: Optional[aiosqlite.Connection]) -> int | Non
 
                 slot_id = row[0]
                 await conn.commit()
-                logger.info(f"Slot {slot_id} is the first available")
+                logger.debug(f"Slot {slot_id} is the first available")
                 return slot_id
 
         except aiosqlite.Error as e:

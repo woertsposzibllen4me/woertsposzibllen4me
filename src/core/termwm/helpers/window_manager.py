@@ -77,7 +77,6 @@ class WindowManager:
             data = self._generate_window_data(title)
             await sdh.occupy_slot_with_data(conn, slot, data)
 
-        self.logger.info(f"Window <{window_name}> managed successfully.")
         return slot, window_name
 
     async def _assign_slot_and_name_window(

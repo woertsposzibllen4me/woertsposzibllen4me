@@ -40,7 +40,7 @@ class WindowPropertiesCalculator:
             x_pos = -1920
             y_pos = 640
 
-        self.logger.info(
+        self.logger.debug(
             f"Calculated properties for {window_type.name} window at slot number {slot}"
             f": ({width}, {height}, {x_pos}, {y_pos})."
         )
@@ -76,7 +76,7 @@ class WindowPropertiesCalculator:
 
             x_pos_offset -= width
 
-        self.logger.info(
+        self.logger.debug(
             f"Secondary properties for {[window.name for window in secondary_windows]} "
             f"calculated are {properties}"
         )

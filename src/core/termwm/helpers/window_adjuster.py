@@ -45,4 +45,4 @@ class WindowAdjuster:
 
     def set_window_title(self, title: str) -> None:
         os.system(f"title {title}")
-        self.logger.info(f"Window title set to <{title}>.")
+        self.logger.debug(f"Window title set to <{title}>.")

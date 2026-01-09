@@ -1,3 +1,5 @@
+"""Main entry point for the PregameSpy application."""
+
 import asyncio
 
 import aiosqlite

@@ -1,3 +1,5 @@
+"""Shared events for PregameSpy application."""
+
 import asyncio
 
 # Event to signal that secondary windows have been spawned and are ready to be managed

@@ -1,1 +1,1 @@
-print("reached apps __init__")
+"""Individual applications package."""

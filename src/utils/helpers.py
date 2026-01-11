@@ -1,3 +1,5 @@
+"""Helper functions for various utilities."""
+
 import time
 from pathlib import Path
 

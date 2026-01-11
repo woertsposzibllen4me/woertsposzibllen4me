@@ -1,1 +1,1 @@
-print("reached core __init__")
+"""Module for core functionalities relevant across all applications."""

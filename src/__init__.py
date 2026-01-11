@@ -1,3 +1,5 @@
+"""Project root level package."""
+
 import os
 
 from src.core.constants import COMMON_LOGS_FILE_PATH

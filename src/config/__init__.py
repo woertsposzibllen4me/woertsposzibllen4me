@@ -1,1 +1,1 @@
-print("reached config __init__ ")
+"""Module for configuration management."""

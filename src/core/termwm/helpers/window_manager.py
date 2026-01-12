@@ -3,7 +3,6 @@ from typing import Optional
 
 import aiosqlite
 
-from src.core.termwm import slots_db_handler as sdh
 from src.core.termwm.core.constants import (
     MAIN_WINDOW_HEIGHT,
     MAIN_WINDOW_WIDTH,
@@ -14,6 +13,11 @@ from src.core.termwm.core.types import SecondaryWindow, WinType
 from src.core.termwm.helpers.window_adjuster import WindowAdjuster
 from src.core.termwm.helpers.window_properties_calculator import (
     WindowPropertiesCalculator,
+)
+from src.core.termwm.slots_db_handler import (
+    get_first_free_slot,
+    occupy_first_free_denied_slot,
+    occupy_slot_with_data,
 )
 
 
@@ -49,7 +53,7 @@ class WindowManager:
         secondary_windows: list[SecondaryWindow],
     ) -> None:
         data = self._generate_window_data(None, secondary_windows)
-        await sdh.occupy_slot_with_data(conn, slot, data, start_index=1)
+        await occupy_slot_with_data(conn, slot, data, start_index=1)
         properties = self.calculator.calculate_secondary_window_properties(
             slot, secondary_windows
         )
@@ -75,7 +79,7 @@ class WindowManager:
 
         if window_type == WinType.ACCEPTED and slot is not None:
             data = self._generate_window_data(title)
-            await sdh.occupy_slot_with_data(conn, slot, data)
+            await occupy_slot_with_data(conn, slot, data)
 
         return slot, window_name
 
@@ -83,14 +87,14 @@ class WindowManager:
         self, conn: aiosqlite.Connection, window_type: WinType, window_name: str
     ) -> tuple[Optional[int], str]:
         if window_type == WinType.ACCEPTED:
-            slot_id = await sdh.get_first_free_slot(conn)
+            slot_id = await get_first_free_slot(conn)
             if slot_id is None:
                 raise ValueError("No available slot for an accepted window.")
             title = window_name
             self.adjuster.set_window_title(title)
 
         elif window_type == WinType.DENIED:
-            slot_id = await sdh.occupy_first_free_denied_slot(conn)
+            slot_id = await occupy_first_free_denied_slot(conn)
             if slot_id is None:
                 raise ValueError("No available slot for a denied window.")
             title = f"{window_name}_denied({slot_id})"

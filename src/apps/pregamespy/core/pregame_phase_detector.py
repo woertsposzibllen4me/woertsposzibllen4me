@@ -6,7 +6,7 @@ from typing import final
 from src.apps.pregamespy.core.game_state_manager import GameStateManager
 from src.apps.pregamespy.core.images_processor import ImagesProcessor
 from src.apps.pregamespy.core.socket_handler import PreGamePhaseHandler
-from src.connection.websocket_client import WebSocketClient
+from src.connection import WebSocketClient
 
 
 # pylint: disable=too-few-public-methods

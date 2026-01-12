@@ -16,7 +16,7 @@ from src.apps.shopwatcher.core.constants import (
     DSLR_SHOW_PATH,
     TIME_SINCE_SHOP_OPENED_TXT_PATH,
 )
-from src.connection.websocket_client import WebSocketClient
+from src.connection import WebSocketClient
 
 
 @final

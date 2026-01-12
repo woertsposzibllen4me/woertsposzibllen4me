@@ -2,18 +2,17 @@ import os
 from logging import Logger
 from typing import Optional
 
-from src.core import constants as const
-from src.utils.helpers import construct_script_name
+from src.config import LOCK_FILES_DIR_PATH
 from src.utils.logging_utils import setup_logger
+from src.utils.helpers import construct_script_name
 
-LOCK_DIR = const.LOCK_FILES_DIR_PATH
 SCRIPT_NAME = construct_script_name(__file__)
 
 
 class LockFileManager:
     def __init__(self, script_name: str, logger: Optional[Logger] = None):
         self.filename = script_name  # name of script instantiating the class
-        self.lock_dir = LOCK_DIR
+        self.lock_dir = LOCK_FILES_DIR_PATH
         self.lock_file_path = os.path.join(self.lock_dir, f"{self.filename}.lock")
         self.logger = logger if logger is not None else setup_logger(SCRIPT_NAME)
         self.class_name = self.__class__.__name__

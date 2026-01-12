@@ -6,7 +6,7 @@ import pygetwindow
 import win32con
 import win32gui
 
-from src.core.termwm import slots_db_handler as sdh
+from src.core.termwm.slots_db_handler import get_all_names
 from src.core.termwm.core.constants import SERVER_WINDOW_NAME
 from src.core.termwm.helpers.window_adjuster import WindowAdjuster
 
@@ -20,7 +20,7 @@ class WindowForegroundManager:
         self, conn: aiosqlite.Connection, server: Optional[bool] = False
     ) -> None:
         windows_names = (
-            await sdh.get_all_names(conn) if not server else [SERVER_WINDOW_NAME]
+            await get_all_names(conn) if not server else [SERVER_WINDOW_NAME]
         )
         windows_names.reverse()
         for name in windows_names:
@@ -41,7 +41,7 @@ class WindowForegroundManager:
         self, conn: aiosqlite.Connection, server: Optional[bool] = False
     ) -> None:
         windows_names = (
-            await sdh.get_all_names(conn) if not server else [SERVER_WINDOW_NAME]
+            await get_all_names(conn) if not server else [SERVER_WINDOW_NAME]
         )
         for name in windows_names:
             window = win32gui.FindWindow(None, name)
@@ -61,7 +61,7 @@ class WindowForegroundManager:
         self, conn: aiosqlite.Connection, server: Optional[bool] = False
     ) -> None:
         windows_names = (
-            await sdh.get_all_names(conn) if not server else [SERVER_WINDOW_NAME]
+            await get_all_names(conn) if not server else [SERVER_WINDOW_NAME]
         )
         for name in windows_names:
             window = pygetwindow.getWindowsWithTitle(name)

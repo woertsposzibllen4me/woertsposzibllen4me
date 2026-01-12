@@ -1,6 +1,6 @@
 """Socket handler for the pre-game phase of the game."""
 
-from src.connection.socket_server import BaseHandler
+from src.connection import BaseHandler
 
 
 class PreGamePhaseHandler(BaseHandler):

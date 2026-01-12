@@ -1,6 +1,6 @@
 """Constants for terminal window manager."""
 
-from src.config.settings import PROJECT_ROOT_PATH
+from src.config import PROJECT_ROOT_PATH
 
 MAIN_WINDOW_WIDTH = 600
 MAIN_WINDOW_HEIGHT = 260

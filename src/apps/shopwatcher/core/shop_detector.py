@@ -22,7 +22,7 @@ from src.apps.shopwatcher.core.shared_events import (
 )
 from src.apps.shopwatcher.core.shop_tracker import ShopTracker
 from src.apps.shopwatcher.core.socket_handler import ShopWatcherHandler
-from src.connection.websocket_client import WebSocketClient
+from src.connection import WebSocketClient
 
 
 # pylint: disable=too-few-public-methods

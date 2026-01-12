@@ -5,29 +5,30 @@ import asyncio
 import aiosqlite
 import cv2 as cv
 
-from src.apps.pregamespy.core.constants import (
+from src.apps.pregamespy import (
     NEW_CAPTURE_AREA,
     SECONDARY_WINDOWS,
-)
-from src.apps.pregamespy.core.images_processor import ImagesProcessor
-from src.apps.pregamespy.core.pregame_phase_detector import (
+    ImagesProcessor,
     PreGamePhaseDetector,
-)
-from src.apps.pregamespy.core.shared_events import (
+    PreGamePhaseHandler,
     mute_ssim_prints,
     secondary_windows_spawned,
 )
-from src.apps.pregamespy.core.socket_handler import PreGamePhaseHandler
-from src.connection.websocket_client import WebSocketClient
-from src.core.constants import (
+from src.connection import (
     STOP_SUBPROCESS_MESSAGE,
     STREAMERBOT_WS_URL,
     SUBPROCESSES_PORTS,
+    WebSocketClient,
 )
-from src.core.termwm.core.twm_main import TerminalWindowManager
-from src.utils.helpers import construct_script_name, print_countdown
-from src.utils.logging_utils import setup_logger
-from src.utils.script_initializer import setup_script
+from src.core.termwm import (
+    TerminalWindowManager,
+)
+from src.utils import (
+    construct_script_name,
+    print_countdown,
+    setup_logger,
+    setup_script,
+)
 
 SCRIPT_NAME = construct_script_name(__file__)
 logger = setup_logger(SCRIPT_NAME)

@@ -5,7 +5,7 @@ from typing import Optional
 
 import aiosqlite
 
-from src.core.termwm import (
+from src.core.termwm.core.constants import (
     TERMINAL_WINDOW_SLOTS_DB_FILE_PATH as SLOT_DB,
 )
 from src.utils.helpers import construct_script_name

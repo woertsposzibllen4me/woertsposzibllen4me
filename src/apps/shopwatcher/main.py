@@ -12,12 +12,12 @@ from src.apps.shopwatcher.core.shared_events import (
 )
 from src.apps.shopwatcher.core.shop_detector import ShopDetector
 from src.apps.shopwatcher.core.socket_handler import ShopWatcherHandler
-from src.connection.websocket_client import WebSocketClient
-from src.core.constants import (
+from src.connection.constants import (
     STOP_SUBPROCESS_MESSAGE,
     STREAMERBOT_WS_URL,
     SUBPROCESSES_PORTS,
 )
+from src.connection.websocket_client import WebSocketClient
 from src.core.termwm import TerminalWindowManager
 from src.utils.helpers import construct_script_name, print_countdown
 from src.utils.logging_utils import setup_logger

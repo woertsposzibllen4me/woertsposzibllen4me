@@ -4,7 +4,7 @@ import threading
 from logging import Logger
 from typing import Optional
 
-from src.core.constants import SUBPROCESSES_PORTS
+from src.connection.constants import SUBPROCESSES_PORTS
 from src.robeau.core.robeau_constants import (
     ROBEAU_PROMPTS_JSON_FILE_PATH as ROBEAU_PROMPTS,
 )

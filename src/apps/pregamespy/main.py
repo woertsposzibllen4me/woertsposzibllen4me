@@ -18,12 +18,12 @@ from src.apps.pregamespy.core.shared_events import (
     secondary_windows_spawned,
 )
 from src.apps.pregamespy.core.socket_handler import PreGamePhaseHandler
-from src.connection.websocket_client import WebSocketClient
-from src.core.constants import (
+from src.connection.constants import (
     STOP_SUBPROCESS_MESSAGE,
     STREAMERBOT_WS_URL,
     SUBPROCESSES_PORTS,
 )
+from src.connection.websocket_client import WebSocketClient
 from src.core.termwm.core.twm_main import TerminalWindowManager
 from src.utils.helpers import construct_script_name, print_countdown
 from src.utils.logging_utils import setup_logger

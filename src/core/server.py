@@ -13,11 +13,10 @@ import websockets
 from websockets.asyncio.server import ServerConnection
 
 from src.config.settings import PROJECT_ROOT_PATH
+from src.connection.constants import STOP_SUBPROCESS_MESSAGE, SUBPROCESSES_PORTS
 from src.core.constants import (
     APPS_DIR_PATH,
     LOCK_FILES_DIR_PATH,
-    STOP_SUBPROCESS_MESSAGE,
-    SUBPROCESSES_PORTS,
 )
 from src.core.termwm import (
     TERMINAL_WINDOW_SLOTS_DB_FILE_PATH,

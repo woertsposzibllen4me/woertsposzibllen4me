@@ -16,7 +16,6 @@ from src.core.termwm import (
 from src.core.termwm import (
     slots_db_handler as sdh,
 )
-from src.core.termwm.core.types import SecondaryWindow
 from src.utils.helpers import construct_script_name
 from src.utils.lock_file_manager import LockFileManager
 from src.utils.logging_utils import setup_logger

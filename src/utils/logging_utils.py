@@ -25,8 +25,10 @@ def setup_logger(
     If a logging level is not provided, it reads from the configuration file situated
     in `config/settings.ini`
     """
+    if not LOG_DIR_PATH.exists():
+        LOG_DIR_PATH.mkdir(parents=True, exist_ok=True)
+
     script_log_file_path = LOG_DIR_PATH / f"{file_name}.log"
-    common_log_file_path = COMMON_LOGS_FILE_PATH
 
     if level is None:
         config = configparser.ConfigParser()
@@ -58,7 +60,7 @@ def setup_logger(
         logger.addHandler(script_fh)
 
         # Common file handler with UTF-8 encoding
-        common_fh = logging.FileHandler(common_log_file_path, encoding="utf-8")
+        common_fh = logging.FileHandler(COMMON_LOGS_FILE_PATH, encoding="utf-8")
         common_fh.setLevel(LOG_LEVELS[level])
         common_formatter = logging.Formatter(
             "%(asctime)s - %(filename)s:%(lineno)d - %(levelname)s - %(message)s"

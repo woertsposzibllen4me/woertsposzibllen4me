@@ -1,0 +1,27 @@
+"""Project-wide constant values."""
+
+from src.config.settings import PROJECT_ROOT_PATH
+
+# General project paths
+APPS_DIR_PATH = PROJECT_ROOT_PATH / "src" / "apps"
+
+# Temp project paths
+TEMP_DIR_PATH = PROJECT_ROOT_PATH / "temp"
+LOG_DIR_PATH = TEMP_DIR_PATH / "logs"
+LOCK_FILES_DIR_PATH = TEMP_DIR_PATH / "lock_files"
+COMMON_LOGS_FILE_PATH = LOG_DIR_PATH / "all_logs.log"
+
+# URLs
+STREAMERBOT_WS_URL = "ws://127.0.0.1:50001/"  # Defined in the Streamer.bot app settings
+
+# Subprocesses
+STOP_SUBPROCESS_MESSAGE = "stop$subprocess"  # $ character is used to avoid accidental
+# trigger from speech to text.
+
+SUBPROCESSES_PORTS = {
+    # list of subprocesses name and their socket server ports
+    "shopwatcher": 59000,
+    "pregamespy": 59001,
+    "robeau": 59002,
+    "synonym_adder": 59003,
+}

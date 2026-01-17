@@ -1,6 +1,6 @@
 """Socket handler for ShopWatcher app."""
 
-from src.connection import BaseHandler
+from src.connection.socket_server import BaseHandler
 
 
 class ShopWatcherHandler(BaseHandler):

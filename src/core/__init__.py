@@ -1,1 +1,1 @@
-"""Core utilities and managers."""
+"""Module for core functionalities relevant across all applications."""

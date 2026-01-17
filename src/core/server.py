@@ -1,4 +1,9 @@
-"""Websocket server made for listening to a basic StreamDeck Websocket client plugin."""
+"""Websocket server made for listening to a basic StreamDeck Websocket client plugin.
+
+This is where the scripts will be launched from... and sometimes
+communicated with, although this is the kind of complex stuff I'll worry
+about later.
+"""
 
 import asyncio
 from collections.abc import Awaitable, Callable
@@ -7,15 +12,23 @@ import aiosqlite
 import websockets
 from websockets.asyncio.server import ServerConnection
 
-from src.config import APPS_DIR_PATH, LOCK_FILES_DIR_PATH, PROJECT_ROOT_PATH
-from src.connection import STOP_SUBPROCESS_MESSAGE, SUBPROCESSES_PORTS
+from src.config.settings import PROJECT_ROOT_PATH
+from src.core.constants import (
+    APPS_DIR_PATH,
+    LOCK_FILES_DIR_PATH,
+    STOP_SUBPROCESS_MESSAGE,
+    SUBPROCESSES_PORTS,
+)
 from src.core.termwm import (
     TERMINAL_WINDOW_SLOTS_DB_FILE_PATH,
     TerminalWindowManager,
     WinType,
 )
-from src.core.termwm import slots_db_handler as sdh
-from src.utils import construct_script_name, setup_logger
+from src.core.termwm import (
+    slots_db_handler as sdh,
+)
+from src.utils.helpers import construct_script_name
+from src.utils.logging_utils import setup_logger
 
 twm = TerminalWindowManager()
 

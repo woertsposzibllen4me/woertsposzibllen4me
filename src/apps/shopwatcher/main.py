@@ -5,26 +5,23 @@ import asyncio
 import aiosqlite
 import cv2 as cv
 
-from src.apps.shopwatcher import (
-    SECONDARY_WINDOWS,
-    ShopDetector,
-    ShopWatcherHandler,
+from src.apps.shopwatcher.core.constants import SECONDARY_WINDOWS
+from src.apps.shopwatcher.core.shared_events import (
     mute_ssim_prints,
     secondary_windows_spawned,
 )
-from src.connection import (
+from src.apps.shopwatcher.core.shop_detector import ShopDetector
+from src.apps.shopwatcher.core.socket_handler import ShopWatcherHandler
+from src.connection.websocket_client import WebSocketClient
+from src.core.constants import (
     STOP_SUBPROCESS_MESSAGE,
     STREAMERBOT_WS_URL,
     SUBPROCESSES_PORTS,
-    WebSocketClient,
 )
 from src.core.termwm import TerminalWindowManager
-from src.utils import (
-    construct_script_name,
-    print_countdown,
-    setup_logger,
-    setup_script,
-)
+from src.utils.helpers import construct_script_name, print_countdown
+from src.utils.logging_utils import setup_logger
+from src.utils.script_initializer import setup_script
 
 PORT = SUBPROCESSES_PORTS["shopwatcher"]
 SCRIPT_NAME = construct_script_name(__file__)

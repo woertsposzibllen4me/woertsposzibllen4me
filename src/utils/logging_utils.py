@@ -4,7 +4,8 @@ import configparser
 import logging
 from logging import Logger
 
-from src.config import COMMON_LOGS_FILE_PATH, LOG_DIR_PATH, PROJECT_ROOT_PATH
+from src.config.settings import PROJECT_ROOT_PATH
+from src.core.constants import COMMON_LOGS_FILE_PATH, LOG_DIR_PATH
 
 LOG_LEVELS = {
     "DEBUG": logging.DEBUG,
@@ -24,12 +25,6 @@ def setup_logger(
     If a logging level is not provided, it reads from the configuration file situated
     in `config/settings.ini`
     """
-    if not LOG_DIR_PATH.exists():
-        LOG_DIR_PATH.mkdir(parents=True, exist_ok=True)
-
-    with COMMON_LOGS_FILE_PATH.open("a") as log_file:
-        log_file.write("<< New Log Entry >>\n")
-
     script_log_file_path = LOG_DIR_PATH / f"{file_name}.log"
     common_log_file_path = COMMON_LOGS_FILE_PATH
 

@@ -2,6 +2,7 @@ from logging import Logger
 
 import aiosqlite
 
+from src.core.termwm import slots_db_handler as sdh
 from src.core.termwm.core.types import SecondaryWindow, WinType
 from src.core.termwm.helpers.window_adjuster import WindowAdjuster
 from src.core.termwm.helpers.window_foreground_manager import (
@@ -9,13 +10,6 @@ from src.core.termwm.helpers.window_foreground_manager import (
 )
 from src.core.termwm.helpers.window_properties_calculator import (
     WindowPropertiesCalculator,
-)
-from src.core.termwm.slots_db_handler import (
-    free_slot,
-    get_all_free_slots,
-    get_all_occupied_slots,
-    get_full_data,
-    occupy_slot_with_data,
 )
 
 
@@ -35,8 +29,8 @@ class WindowRefitter:
     async def search_for_vacant_slots(
         self, conn: aiosqlite.Connection
     ) -> dict[int, int]:
-        free_slots = await get_all_free_slots(conn)
-        occupied_slots = await get_all_occupied_slots(conn)
+        free_slots = await sdh.get_all_free_slots(conn)
+        occupied_slots = await sdh.get_all_occupied_slots(conn)
         occupied_slots.reverse()
         pairs = {}
         shorter_length = min(len(free_slots), len(occupied_slots))
@@ -72,9 +66,9 @@ class WindowRefitter:
             await self.adjuster.adjust_window(window.name, props)
 
     async def reset_windows_positions(self, conn: aiosqlite.Connection) -> None:
-        occupied_slots = await get_all_occupied_slots(conn)
+        occupied_slots = await sdh.get_all_occupied_slots(conn)
         for slot in occupied_slots:
-            data = await get_full_data(conn, slot)
+            data = await sdh.get_full_data(conn, slot)
             self.logger.info(f"Rearrangement data obtained for slot {slot}: {data}")
 
             if data is not None and len(data) > 0 and len(data[0]) > 0:
@@ -86,12 +80,12 @@ class WindowRefitter:
         pairs = await self.search_for_vacant_slots(conn) or {}
 
         for slot, new_slot in pairs.items():
-            data = await get_full_data(conn, slot)
+            data = await sdh.get_full_data(conn, slot)
             self.logger.info(f"Rearrangement data obtained: {data}")
 
             if data is not None and len(data) > 0 and len(data[0]) > 0:
-                await free_slot(conn, slot)
-                await occupy_slot_with_data(conn, new_slot, data)
+                await sdh.free_slot(conn, slot)
+                await sdh.occupy_slot_with_data(conn, new_slot, data)
                 await self.readjust_main_window(new_slot, data[0][0])
                 await self.readjust_secondary_windows(new_slot, data)
 

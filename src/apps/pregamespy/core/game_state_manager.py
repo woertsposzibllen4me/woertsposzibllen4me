@@ -15,7 +15,7 @@ from src.apps.pregamespy.core.images_processor import ImagesProcessor
 from src.apps.pregamespy.core.pick_phase import PickPhase
 from src.apps.pregamespy.core.shared_events import mute_ssim_prints
 from src.apps.pregamespy.core.tabbed import Tabbed
-from src.connection import WebSocketClient
+from src.connection.websocket_client import WebSocketClient
 
 
 @final

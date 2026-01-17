@@ -1,6 +1,6 @@
 """Constants for the shopwatcher app."""
 
-from src.config import PROJECT_ROOT_PATH
+from src.config.settings import PROJECT_ROOT_PATH
 from src.core.termwm import SecondaryWindow
 
 # Base paths

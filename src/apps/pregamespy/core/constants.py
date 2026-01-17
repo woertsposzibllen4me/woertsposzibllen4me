@@ -2,7 +2,7 @@
 
 import cv2 as cv
 
-from src.config import PROJECT_ROOT_PATH
+from src.config.settings import PROJECT_ROOT_PATH
 from src.core.termwm import SecondaryWindow
 
 # Window config for TerminalWindowManager

@@ -12,7 +12,8 @@ import asyncio
 from logging import Logger
 from typing import TYPE_CHECKING
 
-from src.utils import construct_script_name, setup_logger
+from src.utils.helpers import construct_script_name
+from src.utils.logging_utils import setup_logger
 
 if TYPE_CHECKING:
     from asyncio.streams import StreamReader, StreamWriter

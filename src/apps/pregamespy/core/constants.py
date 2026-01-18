@@ -1,9 +1,8 @@
 """Constants for the pregamespy application."""
 
-import cv2 as cv
-
 from src.config.settings import PROJECT_ROOT_PATH
 from src.core.termwm import SecondaryWindow
+from src.utils.helpers import load_grayscale_opencv_template
 
 # Window config for TerminalWindowManager
 SECONDARY_WINDOWS = [
@@ -30,33 +29,26 @@ HERO_PICK_AREA = {"left": 1658, "top": 1028, "width": 62, "height": 38}
 NEW_CAPTURE_AREA = {"left": 0, "top": 0, "width": 0, "height": 0}
 
 # Path to OpenCV templates
-DOTA_TAB_TEMPLATE = cv.imread(
-    str(_OPENCV_DIR / "dota_menu_power_icon.jpg"),
-    cv.IMREAD_GRAYSCALE,
+DOTA_TAB_TEMPLATE = load_grayscale_opencv_template(
+    _OPENCV_DIR / "dota_menu_power_icon.jpg"
 )
-IN_GAME_TEMPLATE = cv.imread(
-    str(_OPENCV_DIR / "dota_courier_deliver_items_icon.jpg"),
-    cv.IMREAD_GRAYSCALE,
+IN_GAME_TEMPLATE = load_grayscale_opencv_template(
+    _OPENCV_DIR / "dota_courier_deliver_items_icon.jpg"
 )
-STARTING_BUY_TEMPLATE = cv.imread(
-    str(_OPENCV_DIR / "dota_strategy-load-out-world-guides.jpg"),
-    cv.IMREAD_GRAYSCALE,
+STARTING_BUY_TEMPLATE = load_grayscale_opencv_template(
+    _OPENCV_DIR / "dota_strategy-load-out-world-guides.jpg"
 )
-PLAY_DOTA_BUTTON_TEMPLATE = cv.imread(
-    str(_OPENCV_DIR / "dota_play_dota_button.jpg"),
-    cv.IMREAD_GRAYSCALE,
+PLAY_DOTA_BUTTON_TEMPLATE = load_grayscale_opencv_template(
+    _OPENCV_DIR / "dota_play_dota_button.jpg"
 )
-DESKTOP_TAB_TEMPLATE = cv.imread(
-    str(_OPENCV_DIR / "windows_desktop_icons.jpg"),
-    cv.IMREAD_GRAYSCALE,
+DESKTOP_TAB_TEMPLATE = load_grayscale_opencv_template(
+    _OPENCV_DIR / "windows_desktop_icons.jpg"
 )
-SETTINGS_TEMPLATE = cv.imread(
-    str(_OPENCV_DIR / "dota_settings_icon.jpg"),
-    cv.IMREAD_GRAYSCALE,
+SETTINGS_TEMPLATE = load_grayscale_opencv_template(
+    _OPENCV_DIR / "dota_settings_icon.jpg"
 )
-HERO_PICK_TEMPLATE = cv.imread(
-    str(_OPENCV_DIR / "dota_hero_select_chat_icons.jpg"),
-    cv.IMREAD_GRAYSCALE,
+HERO_PICK_TEMPLATE = load_grayscale_opencv_template(
+    _OPENCV_DIR / "dota_hero_select_chat_icons.jpg"
 )
 
 # Paths to JSON request files for scene changes

@@ -23,6 +23,7 @@ from src.apps.shopwatcher.core.shared_events import (
 from src.apps.shopwatcher.core.shop_tracker import ShopTracker
 from src.apps.shopwatcher.core.socket_handler import ShopWatcherHandler
 from src.connection.websocket_client import WebSocketClient
+from src.utils.helpers import load_grayscale_opencv_template
 
 
 # pylint: disable=too-few-public-methods
@@ -60,7 +61,7 @@ class ShopDetector:
                   (see SHOP_TEMPLATE_IMAGE_PATH).
 
         """
-        template = cv.imread(str(SHOP_TEMPLATE_IMAGE_PATH), cv.IMREAD_GRAYSCALE)
+        template = load_grayscale_opencv_template(SHOP_TEMPLATE_IMAGE_PATH)
 
         while not self.socket_handler.stop_event.is_set():
             frame = await self._capture_window(SCREEN_CAPTURE_AREA)

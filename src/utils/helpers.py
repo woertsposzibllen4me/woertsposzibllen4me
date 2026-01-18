@@ -1,7 +1,10 @@
 """Helper functions for various utilities."""
 
 import time
+from logging import Logger
 from pathlib import Path
+
+import cv2 as cv
 
 
 def print_countdown(duration: int = 3) -> None:
@@ -45,3 +48,16 @@ def construct_script_name(file_path: str) -> str:
         return f"{parent_name}_main"
 
     return base_name
+
+
+def load_grayscale_opencv_template(
+    template_path: Path, logger: Logger | None = None
+) -> cv.typing.MatLike:
+    """Load a grayscale OpenCV template image from the specified path."""
+    template = cv.imread(str(template_path), cv.IMREAD_GRAYSCALE)
+    if template is None:
+        e = f"Template image could not be loaded: {template_path}"
+        if logger:
+            logger.error(e)
+        raise ValueError(e)
+    return template

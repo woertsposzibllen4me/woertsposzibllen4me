@@ -1,32 +1,48 @@
+"""Demonstrate what happens when launching an app using the terminal window manager."""
+
 import argparse
-import os
+import shutil
 import subprocess
+from typing import Protocol, cast
 
 from src.config.settings import PROJECT_ROOT_PATH
+from src.core.termwm.example.example_script import TMW_EXAMPLE_SCRIPT_FILEPATH
 
 
-def launch_main_script(clear_slots: bool = False) -> None:
+class Args(Protocol):
+    """Protocol for command-line arguments."""
+
+    clear_slots: bool
+
+
+def launch_main_script(*, clear_slots: bool = False) -> None:
+    """Simulate the launching of an application using the terminal window manager.
+
+    Args:
+        clear_slots: Whether to clear all slots in the database before adjusting.
+
     """
-    Simulate the launching of an application using the terminal window manager.
+    example_script_filename = TMW_EXAMPLE_SCRIPT_FILEPATH
 
-    Args :
-        clear_slots : Whether to clear all slots in the database before adjusting.
+    commands = [
+        f"cd /d {PROJECT_ROOT_PATH}",
+        f"set PYTHONPATH={PROJECT_ROOT_PATH}",
+        ".\\.venv\\Scripts\\activate",
+        f"py {example_script_filename}" + (" --clear-slots" if clear_slots else ""),
+    ]
 
-    """
-    example_script_dir = os.path.dirname(os.path.realpath(__file__))
-    example_script_filename = "example_script.py"
+    cmd_path = shutil.which("cmd")
+    if not cmd_path:
+        e = "Could not find cmd.exe in PATH."
+        raise RuntimeError(e)
 
-    clear_slots_arg = "--clear-slots" if clear_slots else ""
-
-    command = (
-        f'start cmd /k "cd /d {PROJECT_ROOT_PATH}'
-        f"&& set PYTHONPATH={PROJECT_ROOT_PATH}"
-        f"&& .\\venv\\Scripts\\activate"
-        f"&& cd {example_script_dir}"
-        f"&& py {example_script_filename} {clear_slots_arg}"
+    # Use /k to keep parent window open after executing start command
+    command_string = " && ".join(commands)
+    subprocess.run(  # noqa: S603  # Intentional: controlled input only
+        [cmd_path, "/c", "start", "cmd", "/k", command_string],
+        check=True,
+        cwd=PROJECT_ROOT_PATH,
     )
-
-    subprocess.run(command, shell=True, check=True)
 
 
 if __name__ == "__main__":
@@ -38,6 +54,5 @@ if __name__ == "__main__":
         action="store_true",
         help="Clear all slots in the database after adjusting",
     )
-    args = parser.parse_args()
-
+    args = cast("Args", cast("object", parser.parse_args()))
     launch_main_script(clear_slots=args.clear_slots)

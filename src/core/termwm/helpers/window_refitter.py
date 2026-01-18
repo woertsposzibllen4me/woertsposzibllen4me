@@ -1,8 +1,7 @@
 from logging import Logger
 
 import aiosqlite
-
-from src.core.termwm import slots_db_handler as sdh
+import src.core.termwm.slots_db_handler as sdh
 from src.core.termwm.core.types import SecondaryWindow, WinType
 from src.core.termwm.helpers.window_adjuster import WindowAdjuster
 from src.core.termwm.helpers.window_foreground_manager import (

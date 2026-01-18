@@ -5,8 +5,8 @@ from .core.twm_main import TerminalWindowManager
 from .core.types import SecondaryWindow, WinType
 
 __all__ = [
-    "TerminalWindowManager",
-    "SecondaryWindow",
-    "WinType",
     "TERMINAL_WINDOW_SLOTS_DB_FILE_PATH",
+    "SecondaryWindow",
+    "TerminalWindowManager",
+    "WinType",
 ]

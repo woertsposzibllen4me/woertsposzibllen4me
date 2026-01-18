@@ -2,8 +2,7 @@ from logging import Logger
 from typing import Optional
 
 import aiosqlite
-
-from src.core.termwm import slots_db_handler as sdh
+import src.core.termwm.slots_db_handler as sdh
 from src.core.termwm.core.constants import (
     MAIN_WINDOW_HEIGHT,
     MAIN_WINDOW_WIDTH,

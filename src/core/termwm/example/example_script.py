@@ -3,12 +3,12 @@ import asyncio
 import os
 import subprocess
 
+import src.core.termwm.slots_db_handler as sdh
 from src.core.termwm import (
     TERMINAL_WINDOW_SLOTS_DB_FILE_PATH,
     SecondaryWindow,
     TerminalWindowManager,
     WinType,
-    slots_db_handler as sdh,
 )
 
 
@@ -41,7 +41,9 @@ async def main(clear_db_slots=False) -> None:
         return
 
     main_manager = TerminalWindowManager()
-    slot, _ = await main_manager.adjust_terminal_window(conn, WinType.ACCEPTED, "Example Script")
+    slot, _ = await main_manager.adjust_terminal_window(
+        conn, WinType.ACCEPTED, "Example Script"
+    )
 
     if slot is None:
         print("No slot in DB available/error occured.")

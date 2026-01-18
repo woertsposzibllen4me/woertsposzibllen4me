@@ -24,7 +24,7 @@ from src.connection.constants import (
     SUBPROCESSES_PORTS,
 )
 from src.connection.websocket_client import WebSocketClient
-from src.core.termwm.core.twm_main import TerminalWindowManager
+from src.core.termwm import TerminalWindowManager
 from src.utils.helpers import construct_script_name, print_countdown
 from src.utils.logging_utils import setup_logger
 from src.utils.script_initializer import setup_script
